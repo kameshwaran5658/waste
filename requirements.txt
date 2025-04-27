@@ -1,0 +1,7 @@
+Flask
+Flask-WTF
+Flask-SocketIO
+Flask-APScheduler
+mysql-connector-python
+bcrypt
+python-dotenv
