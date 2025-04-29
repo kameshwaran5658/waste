@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SavoryAI - Smart Food Waste Management</title>
+
+  <!-- CSS Links -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-green: #2ecc71;
+      --dark-green: #27ae60;
+      --light-gray: #f9f9f9;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .hero-section {
+      min-height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                  url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5') no-repeat center center/cover;
+      color: white;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .feature-card {
+      transition: transform 0.3s;
+      border: none;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .btn-primary {
+      background-color: var(--primary-green);
+      border: none;
+      padding: 12px 30px;
+    }
+
+    .step-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--primary-green);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .testimonial-card {
+      background: var(--light-gray);
+      border-radius: 15px;
+      padding: 25px;
+      height: 100%;
+    }
+
+    .admin-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    @media (max-width: 991px) {
+      .hero-section {
+        min-height: 80vh;
+        padding-top: 6rem;
+      }
+      .admin-btn {
+        top: 15px;
+        right: 15px;
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .hero-section {
+        min-height: 70vh;
+        background-position: center top;
+        padding: 50px 20px;
+      }
+
+      .hero-section h1 {
+        font-size: 2rem;
+      }
+
+      .hero-section p {
+        font-size: 1rem;
+      }
+
+      .btn-primary, .btn-outline-light {
+        width: 100%;
+        padding: 10px 20px;
+      }
+
+      .row.g-5, .row.g-4 {
+        row-gap: 2rem;
+      }
+
+      .step-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+
+      .testimonial-card {
+        padding: 20px;
+      }
+
+      footer .row > div {
+        margin-bottom: 2rem;
+      }
+
+      .d-flex.gap-3 {
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      footer p {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Admin Login Button -->
+  <a href="/admin/login" class="btn btn-light admin-btn">
+    <i class="fas fa-lock"></i> Admin Login
+  </a>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container" data-aos="fade-up">
+      <h1 class="display-5 fw-bold mb-3">Revolutionizing Food Management with AI</h1>
+      <p class="lead mb-4">Predict. Plan. Prevent Waste.</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a href="#features" class="btn btn-primary btn-lg">Get Started</a>
+        <a href="#about" class="btn btn-outline-light btn-lg">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-5 bg-light">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6" data-aos="fade-right">
+          <h2 class="mb-4">Fighting Food Waste in Campus Dining</h2>
+          <p class="lead text-muted">University mess halls typically waste 25-40% of prepared food daily. Our AI system analyzes multiple data points to optimize food production:</p>
+          <ul class="list-unstyled">
+            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Historical consumption patterns</li>
+            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Real-time student attendance</li>
+            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Menu item popularity analysis</li>
+            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Seasonal food preferences</li>
+          </ul>
+        </div>
+        <div class="col-lg-6" data-aos="fade-left">
+          <img src="https://images.unsplash.com/photo-1577303935007-0d306ee638cf" alt="Food waste reduction" class="img-fluid rounded-3 shadow">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-5" data-aos="fade-up">Key Features</h2>
+      <div class="row g-4">
+        <div class="col-sm-6 col-lg-4" data-aos="zoom-in">
+          <div class="feature-card card h-100 p-4 text-center">
+            <i class="fas fa-chart-pie fa-3x text-success mb-3"></i>
+            <h5>Smart Analytics Dashboard</h5>
+            <p class="text-muted">Real-time waste tracking and consumption insights</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+          <div class="feature-card card h-100 p-4 text-center">
+            <i class="fas fa-robot fa-3x text-success mb-3"></i>
+            <h5>AI Prediction Engine</h5>
+            <p class="text-muted">TensorFlow-powered demand forecasting</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+          <div class="feature-card card h-100 p-4 text-center">
+            <i class="fas fa-database fa-3x text-success mb-3"></i>
+            <h5>Data Management</h5>
+            <p class="text-muted">Secure MySQL storage with export capabilities</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="bg-light py-5">
+    <div class="container">
+      <h2 class="text-center mb-5" data-aos="fade-up">4-Step Process</h2>
+      <div class="row text-center g-4">
+        <div class="col-6 col-md-3" data-aos="fade-up">
+          <div class="step-circle">1</div>
+          <h6 class="my-2">Track Attendance</h6>
+          <p class="small">RFID integration or manual entry</p>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+          <div class="step-circle">2</div>
+          <h6 class="my-2">Plan Menu</h6>
+          <p class="small">Digital menu management system</p>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
+          <div class="step-circle">3</div>
+          <h6 class="my-2">AI Prediction</h6>
+          <p class="small">Real-time ingredient calculations</p>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="300">
+          <div class="step-circle">4</div>
+          <h6 class="my-2">Optimize Cooking</h6>
+          <p class="small">Precise portion recommendations</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-5">
+    <div class="container">
+      <h2 class="text-center mb-5" data-aos="fade-up">Success Stories</h2>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4" data-aos="fade-up">
+          <div class="testimonial-card">
+            <p class="text-muted">"Reduced our food waste by 75% in the first month of implementation."</p>
+            <div class="d-flex align-items-center mt-3">
+              <img src="https://cdn-icons-png.flaticon.com/512/681/681494.png" alt="University logo" style="width: 50px;" class="me-3">
+              <div>
+                <h6 class="mb-0">Tech University</h6>
+                <small class="text-muted">Mumbai Campus</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <h5>Contact Us</h5>
+          <ul class="list-unstyled">
+            <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Green Campus Rd, Sector 15, Bengaluru</li>
+            <li class="mb-2"><i class="fas fa-phone me-2"></i>+91 98765 43210</li>
+            <li class="mb-2"><i class="fas fa-envelope me-2"></i>support@savoryai.in</li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5>Follow Us</h5>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-white"><i class="fab fa-twitter fa-2x"></i></a>
+            <a href="#" class="text-white"><i class="fab fa-linkedin fa-2x"></i></a>
+            <a href="#" class="text-white"><i class="fab fa-github fa-2x"></i></a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h5>Open Source</h5>
+          <p>Contribute to our project on GitHub:</p>
+          <a href="https://github.com/savoryai/food-waste-mgmt" class="btn btn-outline-light">
+            <i class="fab fa-github me-2"></i>View Repository
+          </a>
+        </div>
+      </div>
+      <hr class="mt-5">
+      <p class="text-center text-muted mb-0">&copy; 2023 SavoryAI. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+  </script>
+</body>
+</html>

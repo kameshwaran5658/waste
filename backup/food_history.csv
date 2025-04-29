@@ -1,0 +1,54 @@
+day,meal_type,student_count,item_name,actual_quantity_used
+Monday,Breakfast,100,Idly,500
+Monday,Lunch,120,Rice,130
+Tuesday,Lunch,110,Rice,115
+Tuesday,Dinner,90,Parotta,450
+Wednesday,Breakfast,95,Dosa,380
+Wednesday,Breakfast,95,Semiya,90
+Thursday,Lunch,100,Karakolambhu,105
+Friday,Dinner,85,Poori,420
+Monday,Dinner,105,Chapati,480
+Tuesday,Breakfast,98,Pongal,400
+Wednesday,Lunch,120,Lemon Rice,125
+Thursday,Breakfast,90,Upma,360
+Friday,Lunch,115,Curd Rice,110
+Saturday,Breakfast,80,Idiyappam,320
+Saturday,Lunch,100,Tamarind Rice,110
+Saturday,Dinner,95,Parotta,470
+Sunday,Breakfast,88,Dosa,370
+Sunday,Lunch,105,Sambar Rice,120
+Sunday,Dinner,90,Poori,430
+Monday,Breakfast,102,Pongal,410
+Monday,Lunch,115,Rice,128
+Monday,Dinner,98,Chapati,460
+Tuesday,Breakfast,97,Idly,490
+Tuesday,Lunch,113,Rice,119
+Tuesday,Dinner,92,Parotta,455
+Wednesday,Breakfast,94,Upma,350
+Wednesday,Lunch,117,Lemon Rice,122
+Wednesday,Dinner,89,Chapati,440
+Thursday,Breakfast,93,Pongal,395
+Thursday,Lunch,110,Rice,125
+Thursday,Dinner,88,Poori,410
+Friday,Breakfast,90,Idly,470
+Friday,Lunch,108,Sambar Rice,118
+Friday,Dinner,87,Chapati,430
+Saturday,Breakfast,85,Dosa,360
+Saturday,Lunch,102,Rice,115
+Saturday,Dinner,90,Poori,415
+Sunday,Breakfast,92,Upma,355
+Sunday,Lunch,107,Curd Rice,112
+Sunday,Dinner,89,Parotta,445
+Monday,Breakfast,99,Pongal,405
+Monday,Lunch,118,Lemon Rice,127
+Monday,Dinner,100,Chapati,470
+Tuesday,Breakfast,96,Idly,480
+Tuesday,Lunch,112,Rice,122
+Tuesday,Dinner,91,Poori,425
+Wednesday,Breakfast,93,Dosa,370
+Wednesday,Lunch,119,Sambar Rice,124
+Wednesday,Dinner,88,Parotta,460
+Thursday,Breakfast,92,Upma,345
+Thursday,Lunch,108,Curd Rice,115
+Thursday,Dinner,87,Chapati,435
+Friday,Breakfast,91,Pongal,400

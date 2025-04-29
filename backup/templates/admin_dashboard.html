@@ -101,132 +101,19 @@
 <!-- Main Content -->
 <div class="main">
   <div class="container-fluid">
-<!-- Main Dashboard Section -->
-<!-- Full Premium Powerful Dashboard -->
-<div id="dashboard" class="animate__animated animate__fadeIn" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height:100vh; padding: 30px;">
 
-  <!-- Welcome Card -->
-  <div class="card mb-5 p-4 shadow rounded-4 border-0 bg-white">
+<!-- Dashboard Section -->
+<div id="dashboard" class="animate__animated animate__fadeIn">
+  <div class="card mb-4 p-4">
     <div class="d-flex align-items-center">
-      <i class="fas fa-tachometer-alt fa-3x text-primary me-4"></i>
+      <img src="https://img.freepik.com/free-vector/dashboard-concept-illustration_114360-734.jpg" alt="Dashboard" class="me-4" style="width: 80px;">
       <div>
-        <h3 class="fw-bold mb-1">Welcome, {{ admin.full_name }}!</h3>
-        <p class="text-muted mb-0">Manage food waste smartly with real-time predictions.</p>
+        <h3 class="fw-bold mb-0">Welcome, {{ admin.full_name }}!</h3>
+        <small class="text-muted">Manage Attendance, Menus, Settings easily.</small>
       </div>
     </div>
   </div>
-
-  <!-- Today's Meal Suggestions -->
-  <h4 class="fw-bold mb-4 text-dark"><i class="fas fa-utensils me-2"></i>Today's Meal Predictions</h4>
-  <div class="row g-4">
-    {% set meal_colors = {'Breakfast':'#FF9F43', 'Lunch':'#4B7BEC', 'Snacks':'#32D74B', 'Dinner':'#FC5C65'} %}
-    {% set meal_icons = {'Breakfast':'fas fa-mug-hot', 'Lunch':'fas fa-hamburger', 'Snacks':'fas fa-cookie-bite', 'Dinner':'fas fa-pizza-slice'} %}
-    {% set meals = ['Breakfast', 'Lunch', 'Snacks', 'Dinner'] %}
-
-    {% for meal in meals %}
-    <div class="col-md-6">
-      <div class="card border-0 shadow rounded-4 animate__animated animate__fadeInUp" style="background: rgba(255, 255, 255, 0.85);">
-        <div class="card-header d-flex align-items-center rounded-top-4" style="background-color: {{ meal_colors[meal] }};">
-          <i class="{{ meal_icons[meal] }} me-2 text-white"></i>
-          <h5 class="mb-0 text-white">{{ meal }}</h5>
-        </div>
-        <div class="card-body">
-          {% set meal_suggestions = suggestions | selectattr('meal_type', 'equalto', meal) | list %}
-          {% if meal_suggestions %}
-          <ul class="list-group list-group-flush">
-            {% for item in meal_suggestions %}
-            <li class="list-group-item d-flex justify-content-between align-items-center" style="cursor:pointer;" onclick="openIngredientModal('{{ item.item_name|lower }}')">
-              <span><i class="fas fa-concierge-bell me-2 text-muted"></i>{{ item.item_name }}</span>
-              <span class="badge rounded-pill" style="background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);">{{ item.suggested_quantity }} {{ item.unit }}</span>
-            </li>
-            {% endfor %}
-          </ul>
-          {% else %}
-          <p class="text-muted text-center py-3">No suggestions available.</p>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-
-  <!-- Ingredients Section -->
-  <h4 class="fw-bold my-5 text-dark"><i class="fas fa-apple-alt me-2"></i>Ingredients Needed Today</h4>
-  <div class="card border-0 shadow rounded-4 bg-white animate__animated animate__fadeInUp">
-    <div class="card-header bg-gradient text-white rounded-top-4" style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-      <h5 class="mb-0"><i class="fas fa-carrot me-2"></i>Ingredient List</h5>
-    </div>
-    <div class="card-body">
-      {% if ingredients %}
-      <div class="table-responsive">
-        <table class="table align-middle table-hover">
-          <thead class="sticky-top bg-light">
-            <tr class="text-center">
-              <th>Ingredient</th>
-              <th>Required Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for ing in ingredients %}
-            <tr class="text-center">
-              <td class="text-start">🛒 {{ ing.ingredient | capitalize }}</td>
-              <td><span class="badge rounded-pill bg-success">{{ ing.required_quantity }}</span></td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      {% else %}
-      <p class="text-muted text-center">No ingredient data available.</p>
-      {% endif %}
-    </div>
-  </div>
-
-  <!-- Ingredient Modal -->
-  <div class="modal fade" id="ingredientModal" tabindex="2" aria-labelledby="ingredientModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content rounded-4 shadow-lg" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);">
-        <div class="modal-header border-0 bg-gradient text-white rounded-top-4" style="background:linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-          <h5 class="modal-title" id="ingredientModalLabel">Ingredients Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <ul class="list-group" id="ingredientList"></ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </div>
-
-<!-- FontAwesome & Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-// JS function to open modal and display ingredients
-const ingredientsData = {{ item_ingredients|tojson }};
-
-function openIngredientModal(itemName) {
-  const modal = new bootstrap.Modal(document.getElementById('ingredientModal'));
-  const list = document.getElementById('ingredientList');
-  list.innerHTML = '';
-
-  const ingredients = ingredientsData[itemName];
-  if (ingredients) {
-    for (const [key, value] of Object.entries(ingredients)) {
-      list.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center">
-        🥄 ${key.replace('_', ' ')}
-        <span class="badge bg-primary rounded-pill">${value}</span>
-      </li>`;
-    }
-  } else {
-    list.innerHTML = '<li class="list-group-item text-muted text-center">No ingredients found.</li>';
-  }
-  modal.show();
-}
-</script>
-
 
 <!-- Attendance Section -->
 <div id="attendance" class="hidden animate__animated animate__fadeIn">

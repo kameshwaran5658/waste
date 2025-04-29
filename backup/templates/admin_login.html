@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SavoryAI - Admin Login</title>
+
+    <!-- Styles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-green: #2ecc71;
+            --dark-green: #27ae60;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #1a2f3f, #2c5364);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.18);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .auth-image {
+            background: linear-gradient(45deg, rgba(46, 204, 113, 0.9), rgba(39, 174, 96, 0.9)),
+                        url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px 0 0 20px;
+            position: relative;
+        }
+
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .input-group {
+            transition: transform 0.3s ease;
+        }
+
+        .input-group:focus-within {
+            transform: translateX(10px);
+        }
+
+        .form-control {
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.2);
+        }
+
+        .btn-login {
+            background: var(--primary-green);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background: var(--dark-green);
+            transform: translateY(-2px);
+        }
+
+        .btn-login::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        .btn-login:hover::after {
+            left: 120%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animated Background -->
+    <div class="particles">
+        <div class="position-absolute top-0 start-0 w-100 h-100" 
+             style="background: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'0.5\' fill=\'%232ecc71\'/%3E%3C/svg%3E')">
+        </div>
+    </div>
+
+    <div class="container login-container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="glass-card" data-aos="zoom-in" data-aos-duration="800">
+                    <div class="row g-0">
+                        <!-- Left Image Section -->
+                        <div class="col-md-6 auth-image d-none d-md-block">
+                            <div class="p-5 text-white h-100 d-flex flex-column justify-content-center">
+                                <div class="floating-icon text-center mb-4">
+                                    <i class="fas fa-shield-alt fa-4x"></i>
+                                </div>
+                                <h3 class="text-center mb-3">Secure Admin Portal</h3>
+                                <p class="text-center">AI-Powered Insights & Management</p>
+                                <div class="mt-5 position-relative" style="height: 200px;">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/2092/2092663.png" 
+                                         class="position-absolute floating-icon" 
+                                         style="width: 120px; left: 20%; top: 10%;" 
+                                         alt="Security Shield">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" 
+                                         class="position-absolute floating-icon" 
+                                         style="width: 100px; right: 15%; top: 50%; animation-delay: 0.5s;" 
+                                         alt="Analytics">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Login Form -->
+                        <div class="col-md-6 p-5">
+                            <div class="text-center mb-5">
+                                <img src="https://cdn-icons-png.flaticon.com/512/1999/1999625.png" 
+                                     alt="Admin Avatar" 
+                                     class="mb-3" 
+                                     style="width: 80px; filter: drop-shadow(0 5px 10px rgba(46, 204, 113, 0.2))">
+                                <h2 class="mb-3">Admin Access</h2>
+                                <p class="text-muted">Secure authentication required</p>
+                            </div>
+
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                            {{ message }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+
+                            <form method="POST" action="{{ url_for('admin_login') }}" class="needs-validation" novalidate>
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                
+                                <div class="mb-4">
+                                    <label class="form-label text-dark fw-medium">Username</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent">
+                                            <i class="fas fa-user-circle text-success"></i>
+                                        </span>
+                                        <input type="text" name="username" class="form-control form-control-lg" placeholder="Enter username" required>
+                                        <div class="invalid-feedback">
+                                            Please enter your username
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label text-dark fw-medium">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent">
+                                            <i class="fas fa-fingerprint text-success"></i>
+                                        </span>
+                                        <input type="password" name="password" class="form-control form-control-lg" placeholder="••••••••" required>
+                                        <div class="invalid-feedback">
+                                            Please enter your password
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-login btn-lg w-100 text-white py-3">
+                                    <span class="position-relative z-1">
+                                        <i class="fas fa-unlock-alt me-2"></i>Authenticate
+                                    </span>
+                                </button>
+
+                                <div class="text-center mt-4">
+                                    <a href="#" class="text-success text-decoration-none">
+                                        <i class="fas fa-question-circle me-2"></i>Need Help?
+                                    </a>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        // Form validation
+        (() => {
+          'use strict'
+          const forms = document.querySelectorAll('.needs-validation')
+          Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+              if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+              }
+              form.classList.add('was-validated')
+            }, false)
+          })
+        })()
+    </script>
+</body>
+</html>
