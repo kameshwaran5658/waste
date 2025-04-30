@@ -7,163 +7,402 @@
 
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
+        /* Modern Color System with Purple/Violet Palette */
         :root {
-            --primary-green: #2ecc71;
-            --dark-green: #27ae60;
-            --glass-bg: rgba(255, 255, 255, 0.95);
+            --primary-purple: #7c3aed;
+            --primary-light: #8b5cf6;
+            --primary-dark: #5b21b6;
+            --secondary-purple: #c4b5fd;
+            --accent-purple: #4c1d95;
+            --neutral-dark: #1e293b;
+            --neutral-light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --glass-bg: rgba(255, 255, 255, 0.92);
+            --overlay-dark: rgba(30, 41, 59, 0.5);
         }
 
+        /* Base Styles */
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Outfit', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(45deg, #1a2f3f, #2c5364);
+            background: linear-gradient(135deg, #2d1b69, #38217c, #4e2fb7);
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            color: var(--neutral-dark);
         }
 
-        .particles {
-            position: absolute;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-purple);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Geometric Background Elements */
+        .geometric-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             z-index: 0;
+            overflow: hidden;
+            opacity: 0.4;
         }
 
+        .geometric-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-light), var(--primary-purple));
+            filter: blur(60px);
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+            opacity: 0.3;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            right: -50px;
+            opacity: 0.4;
+            background: linear-gradient(45deg, var(--primary-dark), var(--accent-purple));
+        }
+
+        .shape-3 {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            right: 15%;
+            opacity: 0.2;
+        }
+
+        /* Animated Grid Pattern */
+        .grid-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: 0;
+        }
+
+        /* Main Container */
         .login-container {
             position: relative;
-            z-index: 1;
-            backdrop-filter: blur(10px);
+            z-index: 5;
+            padding: 2rem 0;
         }
 
+        /* Glass Card */
         .glass-card {
             background: var(--glass-bg);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.18);
-            transform-style: preserve-3d;
-            perspective: 1000px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
         }
 
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Left Panel Styling */
         .auth-image {
-            background: linear-gradient(45deg, rgba(46, 204, 113, 0.9), rgba(39, 174, 96, 0.9)),
-                        url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.9), rgba(91, 33, 182, 0.9)),
+                url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
-            border-radius: 20px 0 0 20px;
+            border-radius: 24px 0 0 24px;
             position: relative;
+            overflow: hidden;
         }
 
+        .auth-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 30%, rgba(196, 181, 253, 0.3), transparent 70%);
+        }
+
+        .auth-image::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            filter: blur(30px);
+        }
+
+        /* Floating Elements */
         .floating-icon {
-            animation: float 3s ease-in-out infinite;
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(15px) rotate(-5deg); }
+        }
+
+        .icon-delay-1 {
+            animation-delay: 1s;
+        }
+
+        .icon-delay-2 {
+            animation-delay: 2s;
+        }
+
+        /* Form Styling */
+        .form-label {
+            font-weight: 500;
+            color: var(--neutral-dark);
+            margin-bottom: 0.5rem;
         }
 
         .input-group {
-            transition: transform 0.3s ease;
+            position: relative;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         .input-group:focus-within {
-            transform: translateX(10px);
+            transform: translateX(8px);
+        }
+
+        .input-group-text {
+            background: transparent;
+            border: none;
+            border-radius: 12px 0 0 12px;
+            color: var(--primary-purple);
+            padding-left: 1rem;
         }
 
         .form-control {
-            border: 2px solid #e0e0e0;
+            border: 2px solid #e2e8f0;
+            border-radius: 0 12px 12px 0;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            font-weight: 400;
             transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.5);
         }
 
         .form-control:focus {
-            border-color: var(--primary-green);
-            box-shadow: 0 0 15px rgba(46, 204, 113, 0.2);
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
+            background: rgba(255, 255, 255, 0.9);
         }
 
+        .form-control::placeholder {
+            color: #94a3b8;
+            font-weight: 300;
+        }
+
+        /* Button Styling */
         .btn-login {
-            background: var(--primary-green);
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark));
             border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 0.8rem;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
         }
 
         .btn-login:hover {
-            background: var(--dark-green);
+            background: linear-gradient(135deg, var(--primary-dark), var(--accent-purple));
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
             transform: translateY(-2px);
         }
 
-        .btn-login::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255,255,255,0.1);
-            transform: rotate(45deg);
-            transition: all 0.5s ease;
+        .btn-login:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(124, 58, 237, 0.2);
         }
 
-        .btn-login:hover::after {
-            left: 120%;
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        /* Help Link */
+        .help-link {
+            color: var(--primary-purple);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+
+        .help-link:hover {
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .help-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-purple);
+            transition: all 0.3s ease;
+        }
+
+        .help-link:hover::after {
+            width: 100%;
+        }
+
+        /* Alert Styling */
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .alert-warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--warning);
+            color: var(--warning);
+        }
+
+        .btn-close {
+            margin-left: auto;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .btn-close:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 767px) {
+            .glass-card {
+                border-radius: 20px;
+            }
+            
+            .btn-login {
+                font-size: 1rem;
+                padding: 0.7rem;
+            }
         }
     </style>
 </head>
 <body>
-
-    <!-- Animated Background -->
-    <div class="particles">
-        <div class="position-absolute top-0 start-0 w-100 h-100" 
-             style="background: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ccircle cx=\'50\' cy=\'50\' r=\'0.5\' fill=\'%232ecc71\'/%3E%3C/svg%3E')">
-        </div>
+    <!-- Geometric Background -->
+    <div class="geometric-bg">
+        <div class="geometric-shape shape-1"></div>
+        <div class="geometric-shape shape-2"></div>
+        <div class="geometric-shape shape-3"></div>
+        <div class="grid-pattern"></div>
     </div>
 
     <div class="container login-container">
         <div class="row justify-content-center align-items-center min-vh-100">
             <div class="col-12 col-md-10 col-lg-8">
-                <div class="glass-card" data-aos="zoom-in" data-aos-duration="800">
+                <div class="glass-card" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
                     <div class="row g-0">
                         <!-- Left Image Section -->
                         <div class="col-md-6 auth-image d-none d-md-block">
                             <div class="p-5 text-white h-100 d-flex flex-column justify-content-center">
-                                <div class="floating-icon text-center mb-4">
-                                    <i class="fas fa-shield-alt fa-4x"></i>
+                                <div class="text-center mb-4">
+                                    <i class="fas fa-shield-alt fa-4x floating-icon"></i>
                                 </div>
-                                <h3 class="text-center mb-3">Secure Admin Portal</h3>
-                                <p class="text-center">AI-Powered Insights & Management</p>
-                                <div class="mt-5 position-relative" style="height: 200px;">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/2092/2092663.png" 
-                                         class="position-absolute floating-icon" 
-                                         style="width: 120px; left: 20%; top: 10%;" 
-                                         alt="Security Shield">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" 
-                                         class="position-absolute floating-icon" 
-                                         style="width: 100px; right: 15%; top: 50%; animation-delay: 0.5s;" 
-                                         alt="Analytics">
-                                </div>
+                                <h3 class="text-center mb-3 fw-bold">Secure Admin Portal</h3>
+                                <p class="text-center opacity-75">AI-Powered Insights & Management</p>
+                                
                             </div>
                         </div>
 
                         <!-- Right Login Form -->
                         <div class="col-md-6 p-5">
-                            <div class="text-center mb-5">
+                            <div class="text-center mb-5" data-aos="fade-up" data-aos-duration="800">
                                 <img src="https://cdn-icons-png.flaticon.com/512/1999/1999625.png" 
                                      alt="Admin Avatar" 
-                                     class="mb-3" 
-                                     style="width: 80px; filter: drop-shadow(0 5px 10px rgba(46, 204, 113, 0.2))">
-                                <h2 class="mb-3">Admin Access</h2>
+                                     class="mb-4 floating-icon icon-delay-2" 
+                                     style="width: 90px; filter: drop-shadow(0 8px 15px rgba(124, 58, 237, 0.3))">
+                                <h2 class="fw-bold mb-2">Admin Access</h2>
                                 <p class="text-muted">Secure authentication required</p>
                             </div>
 
                             {% with messages = get_flashed_messages(with_categories=true) %}
                                 {% if messages %}
                                     {% for category, message in messages %}
-                                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" data-aos="fade-up" data-aos-duration="600">
                                             {{ message }}
                                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                         </div>
@@ -171,16 +410,16 @@
                                 {% endif %}
                             {% endwith %}
 
-                            <form method="POST" action="{{ url_for('admin_login') }}" class="needs-validation" novalidate>
+                            <form method="POST" action="{{ url_for('admin_login') }}" class="needs-validation" novalidate data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                 
                                 <div class="mb-4">
-                                    <label class="form-label text-dark fw-medium">Username</label>
+                                    <label class="form-label fw-medium">Username</label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-transparent">
-                                            <i class="fas fa-user-circle text-success"></i>
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user-circle text-primary"></i>
                                         </span>
-                                        <input type="text" name="username" class="form-control form-control-lg" placeholder="Enter username" required>
+                                        <input type="text" name="username" class="form-control form-control-lg" placeholder="Enter your username" required>
                                         <div class="invalid-feedback">
                                             Please enter your username
                                         </div>
@@ -188,10 +427,10 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="form-label text-dark fw-medium">Password</label>
+                                    <label class="form-label fw-medium">Password</label>
                                     <div class="input-group">
-                                        <span class="input-group-text bg-transparent">
-                                            <i class="fas fa-fingerprint text-success"></i>
+                                        <span class="input-group-text">
+                                            <i class="fas fa-fingerprint text-primary"></i>
                                         </span>
                                         <input type="password" name="password" class="form-control form-control-lg" placeholder="••••••••" required>
                                         <div class="invalid-feedback">
@@ -200,19 +439,18 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-login btn-lg w-100 text-white py-3">
-                                    <span class="position-relative z-1">
+                                <button type="submit" class="btn btn-login btn-lg w-100 text-white py-3 mt-4">
+                                    <span class="d-flex align-items-center justify-content-center">
                                         <i class="fas fa-unlock-alt me-2"></i>Authenticate
                                     </span>
                                 </button>
 
                                 <div class="text-center mt-4">
-                                    <a href="#" class="text-success text-decoration-none">
+                                    <a href="#" class="help-link">
                                         <i class="fas fa-question-circle me-2"></i>Need Help?
                                     </a>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
@@ -225,7 +463,12 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
-        AOS.init({ duration: 1000, once: true });
+        AOS.init({ 
+            duration: 1200, 
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
 
         // Form validation
         (() => {
