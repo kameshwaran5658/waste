@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SavoryAI - Smart Food Waste Management</title>
-
+  <title>EcoBite - Every bite matters,powered by AI.t</title>
+  <link rel="icon" href="logo.png" type="image/x-icon">
   <!-- CSS Links -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
@@ -331,6 +331,26 @@ section {
   z-index: 2;
 }
 
+.curve {
+  position: relative;
+  display: inline-block;
+  color: #A259FF; /* Brand color */
+  font-weight: 700;
+}
+
+.curve::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 10px;
+  background: url('data:image/svg+xml;utf8,<svg width="100%" height="8" xmlns="http://www.w3.org/2000/svg"><path d="M0,6 Q50,0 100,6" stroke="%23A259FF" fill="transparent" stroke-width="2"/></svg>') no-repeat;
+  background-size: 100% 100%;
+}
+
+
+
 .hero-section h1 {
   font-weight: 700;
   margin-bottom: var(--spacing-md);
@@ -530,6 +550,52 @@ section {
 .feature-card p {
   color: var(--gray-dark);
   margin-bottom: 0;
+}
+
+.text-blue {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-primary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-sm);
+  font-weight: 600;
+  box-shadow: var(--shadow-primary);
+  position: relative;
+  transition: all var(--transition-normal) ease;
+}
+.text-2blue {
+  width: 70px;
+  height: 70px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-primary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-sm);
+  font-weight: 600;
+  box-shadow: var(--shadow-primary);
+  position: relative;
+  transition: all var(--transition-normal) ease;
+}
+.text-3blue {
+  width: 65px;
+  height: 65px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-primary);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-sm);
+  font-weight: 600;
+  box-shadow: var(--shadow-primary);
+  position: relative;
+  transition: all var(--transition-normal) ease;
 }
 
 /* How It Works Section */
@@ -757,7 +823,7 @@ footer .btn-outline:hover {
 
 footer hr {
   margin: var(--spacing-lg) 0;
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .copyright {
@@ -936,8 +1002,8 @@ footer hr {
   <!-- Hero Section -->
   <section class="hero-section">
     <div class="container" data-aos="fade-up">
-      <h1 class="display-5 fw-bold mb-3">Revolutionizing Food Management with AI</h1>
-      <p class="lead mb-4">Predict. Plan. Prevent Waste.</p>
+      <h1 class="display-5 fw-bold mb-3"><span class="curve" style="color:#A259FF;">EcoBite</span> Revolutionizing Food Management with AI</h1>
+      <p class="lead mb-4">Every bite matters – powered by AI.</p>
       <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
         <a href="#features" class="btn btn-primary btn-lg">Get Started</a>
         <a href="#about" class="btn btn-outline-light btn-lg">Learn More</a>
@@ -973,21 +1039,21 @@ footer hr {
       <div class="row g-4">
         <div class="col-sm-6 col-lg-4" data-aos="zoom-in">
           <div class="feature-card card h-100 p-4 text-center">
-            <i class="fas fa-chart-pie fa-3x text-success mb-3"></i>
+            <i class="fas fa-chart-pie fa-3x text-blue mb-3"></i>
             <h5>Smart Analytics Dashboard</h5>
             <p class="text-muted">Real-time waste tracking and consumption insights</p>
           </div>
         </div>
         <div class="col-sm-6 col-lg-4" data-aos="zoom-in" data-aos-delay="100">
           <div class="feature-card card h-100 p-4 text-center">
-            <i class="fas fa-robot fa-3x text-success mb-3"></i>
+            <i class="fas fa-robot fa-3x text-2blue mb-3"></i>
             <h5>AI Prediction Engine</h5>
             <p class="text-muted">TensorFlow-powered demand forecasting</p>
           </div>
         </div>
         <div class="col-sm-6 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
           <div class="feature-card card h-100 p-4 text-center">
-            <i class="fas fa-database fa-3x text-success mb-3"></i>
+            <i class="fas fa-database fa-3x text-3blue mb-3"></i>
             <h5>Data Management</h5>
             <p class="text-muted">Secure MySQL storage with export capabilities</p>
           </div>
@@ -1036,8 +1102,8 @@ footer hr {
             <div class="d-flex align-items-center mt-3">
               <img src="https://cdn-icons-png.flaticon.com/512/681/681494.png" alt="University logo" style="width: 50px;" class="me-3">
               <div>
-                <h6 class="mb-0">Tech University</h6>
-                <small class="text-muted">Mumbai Campus</small>
+                <h6 class="mb-0">Anna University</h6>
+                <small class="text-muted">Madha Engineering College</small>
               </div>
             </div>
           </div>
@@ -1053,9 +1119,9 @@ footer hr {
         <div class="col-md-4">
           <h5>Contact Us</h5>
           <ul class="list-unstyled">
-            <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Green Campus Rd, Sector 15, Bengaluru</li>
+            <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Boys Hostel, MEC, Kundrathur</li>
             <li class="mb-2"><i class="fas fa-phone me-2"></i>+91 98765 43210</li>
-            <li class="mb-2"><i class="fas fa-envelope me-2"></i>support@savoryai.in</li>
+            <li class="mb-2"><i class="fas fa-envelope me-2"></i>support@Ecobite.in</li>
           </ul>
         </div>
         <div class="col-md-4">
@@ -1069,13 +1135,13 @@ footer hr {
         <div class="col-md-4">
           <h5>Open Source</h5>
           <p>Contribute to our project on GitHub:</p>
-          <a href="https://github.com/savoryai/food-waste-mgmt" class="btn btn-outline-light">
+          <a href="https://github.com/kameshwaran5658/waste" class="btn btn-outline-light">
             <i class="fab fa-github me-2"></i>View Repository
           </a>
         </div>
       </div>
       <hr class="mt-5">
-      <p class="text-center text-muted mb-0">&copy; 2023 SavoryAI. All rights reserved.</p>
+      <p class="text-center text-white mb-0">&copy; 2025 EcoBite. All rights reserved.</p>
     </div>
   </footer>
 
