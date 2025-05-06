@@ -39,7 +39,7 @@ db_config = {
 
 # Model config
 MODEL_FILENAME = "food_quantity_model.pkl"
-FEATURE_COLUMNS_FILENAME = "feature_columns.pkl"
+FEATURES_FILENAME = "feature_columns.pkl"
 DEFAULT_COMPARE_DAYS = 7
 COST_PER_KG = 3.50
 
@@ -119,6 +119,8 @@ def get_today_student_count() -> int | None:
         return row[0] if row else None
     except:
         return None
+
+
 # Data fetch & model training
 
 def fetch_history_data():
@@ -126,7 +128,9 @@ def fetch_history_data():
     if not conn:
         return pd.DataFrame()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT day, meal_type, item_name, actual_quantity_used FROM food_history')
+    cursor.execute(
+        "SELECT day, meal_type, item_name, actual_quantity_used, food_waste FROM food_history"
+    )
     rows = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -134,22 +138,26 @@ def fetch_history_data():
 
 
 def prepare_features(df):
-    df = pd.get_dummies(df, columns=['day', 'meal_type', 'item_name'], drop_first=True)
-    y = df['actual_quantity_used']
-    X = df.drop(columns=['actual_quantity_used'])
+    df_enc = pd.get_dummies(df, columns=['day', 'meal_type', 'item_name'], drop_first=True)
+    y = df_enc[['actual_quantity_used', 'food_waste']].values
+    X = df_enc.drop(columns=['actual_quantity_used', 'food_waste'])
     return X, y
 
 
 def train_model():
     df = fetch_history_data()
-    if df.empty:
+    if df.shape[0] < 10:
         return
     X, y = prepare_features(df)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
     model = RandomForestRegressor(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
-    with open(MODEL_FILENAME, 'wb') as f:
-        pickle.dump((model, X.columns.tolist()), f)
+    with open(MODEL_FILENAME, 'wb') as mf:
+        pickle.dump(model, mf)
+    with open(FEATURES_FILENAME, 'wb') as ff:
+        pickle.dump(X.columns.tolist(), ff)
 
 
 @scheduler.task('cron', id='retrain_model', hour=2)
@@ -158,53 +166,68 @@ def scheduled_training():
 
 
 def load_model():
-    if not os.path.exists(MODEL_FILENAME):
+    if not os.path.exists(MODEL_FILENAME) or not os.path.exists(FEATURES_FILENAME):
         train_model()
-    with open(MODEL_FILENAME, 'rb') as f:
-        return pickle.load(f)
-
+    with open(MODEL_FILENAME, 'rb') as mf:
+        model = pickle.load(mf)
+    with open(FEATURES_FILENAME, 'rb') as ff:
+        feature_cols = pickle.load(ff)
+    return model, feature_cols
 
 # Suggestion logic
-
 def suggest_today(student_count):
     model, feature_cols = load_model()
     today_day = datetime.now().strftime('%A')
     conn = get_db_connection()
+    if not conn:
+        return [], []
     cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT meal_type, items FROM menu WHERE day=%s', (today_day,))
+    cursor.execute("SELECT meal_type, items FROM menu WHERE day=%s", (today_day,))
     menu = cursor.fetchall()
     cursor.close()
     conn.close()
 
     suggestions = []
-    ingredients_needed = {}
-
+    total_ingredients = {}
     for row in menu:
         meal = row['meal_type']
-        items = row['items'].split(',')
-        for item in items:
-            item = item.strip()
-            if not item:
-                continue
-            # build feature vector
-            row_data = {col: 0 for col in feature_cols}
-            row_data['student_count'] = student_count
-            if f'day_{today_day}' in  row_data:
-                 row_data[f'day_{today_day}'] = 1
-            if f'meal_type_{meal}' in  row_data:
-                 row_data[f'meal_type_{meal}'] = 1
-            if f'item_name_{item}' in  row_data:
-                 row_data[f'item_name_{item}'] = 1
+        items = [i.strip() for i in row['items'].split(',') if i.strip()]
+        for itm in items:
+            fv = build_feature_vector(today_day, meal, itm, student_count, feature_cols)
+            preds = model.predict(fv)
+            pred_qty = float(preds[0][0])
+            pred_waste = float(preds[0][1])
+            qty = max(0, int(round(pred_qty)))
+            waste = max(0, round(pred_waste, 2))
+            unit = ITEM_UNITS.get(itm.lower(), 'kg')
+            suggestions.append({
+                'meal_type': meal,
+                'item_name': itm,
+                'suggested_quantity': qty,
+                'predicted_waste': waste,
+                'unit': unit
+            })
+            for ing, per in ITEM_INGREDIENTS.get(itm.lower(), {}).items():
+                total_ingredients[ing] = total_ingredients.get(ing, 0) + per * qty
 
-            pred_qty = max(0, round(model.predict(pd.DataFrame([ row_data]))[0]))
-            unit = ITEM_UNITS.get(item.lower(), 'kg')
-            suggestions.append({'meal_type': meal, 'item_name': item, 'suggested_quantity': pred_qty, 'unit': unit})
+    ing_list = [{'ingredient': k, 'required_quantity': round(v, 2)} for k, v in total_ingredients.items()]
+    return suggestions, ing_list
 
-            for ing, per in ITEM_INGREDIENTS.get(item.lower(), {}).items():
-                ingredients_needed[ing] = ingredients_needed.get(ing, 0) + per * pred_qty
 
-    ingredient_list = [{'ingredient': k, 'required_quantity': round(v, 2)} for k, v in ingredients_needed.items()]
-    return suggestions, ingredient_list
+def get_predicted_waste(for_date=None):
+    """
+    Predict total waste (in kg) for all menu items on a given date.
+    """
+    if for_date is None:
+        for_date = date.today()
+    # Fetch student count for that date
+    students = get_student_count_by_date(for_date)
+    # Generate daily suggestions which now include 'predicted_waste'
+    suggestions, _ = suggest_today(students)
+    # Sum up the waste predictions from each suggestion
+    total_waste = sum(item['predicted_waste'] for item in suggestions)
+    return round(total_waste, 2)
+
 
 # Metrics
 
@@ -242,27 +265,17 @@ def get_meals_served_count(for_date=None):
     return get_student_count_by_date(for_date) * periods
 
 
-def build_feature_vector(students, meals, for_date=None):
-    if for_date is None:
-        for_date = date.today()
-    day = for_date.strftime('%A')
-    model, feature_cols = load_model()
-    data = {col: 0 for col in feature_cols}
-    data['student_count'] = students
-    for col in feature_cols:
-        if col.startswith('day_'):
-            data[col] = 1 if col == f'day_{day}' else 0
-    return pd.DataFrame([data], columns=feature_cols)
+# Build feature vector
+
+def build_feature_vector(day_str, meal, item, student_count, feature_cols):
+    vec = {col: 0 for col in feature_cols}
+    vec['student_count'] = student_count
+    for prefix in (f'day_{day_str}', f'meal_type_{meal}', f'item_name_{item}'):
+        if prefix in vec:
+            vec[prefix] = 1
+    return pd.DataFrame([vec], columns=feature_cols)
 
 
-def get_predicted_waste(for_date=None):
-    if for_date is None:
-        for_date = date.today()
-    students = get_student_count_by_date(for_date)
-    meals = get_meals_served_count(for_date)
-    X = build_feature_vector(students, meals, for_date)
-    model, _ = load_model()
-    return round(float(model.predict(X)[0]), 2)
 
 
 def calculate_savings_potential(for_date=None):
@@ -389,32 +402,62 @@ def admin_dashboard():
     cursor = conn.cursor(dictionary=True)
 
     if request.method == 'POST':
-        if request.form.get('form_type') == 'attendance':
-            cursor.execute('INSERT INTO attendance (date, student_count) VALUES (%s, %s)',
-                           (request.form['date'], request.form['student_count']))
-        else:
-            cursor.execute('INSERT INTO menu (day, meal_type, items) VALUES (%s, %s, %s)',
-                           (request.form['day'], request.form['meal_type'], request.form['items']))
+        form_type = request.form.get('form_type')
+
+        if form_type == 'attendance':
+            cursor.execute(
+                'INSERT INTO attendance (date, student_count) VALUES (%s, %s)',
+                (request.form['date'], request.form['student_count'])
+            )
+
+        elif form_type == 'menu':
+            cursor.execute(
+                'INSERT INTO menu (day, meal_type, items) VALUES (%s, %s, %s)',
+                (request.form['day'], request.form['meal_type'], request.form['items'])
+            )
+
+        elif form_type == 'waste':
+             cursor.execute(
+                '''INSERT INTO food_history 
+                   (day, meal_type, item_name, actual_quantity_used, food_waste, student_count)
+                   VALUES (%s, %s, %s, %s, %s, %s)''',
+                (
+                    request.form['date'],
+                    request.form['meal_type_waste'],
+                    request.form['item_name'],
+                    request.form['actual_qty'],
+                    request.form['waste_qty'],
+                    request.form['student_count']  # Ensure student_count is passed from the form
+                )
+            )
         conn.commit()
         return redirect(url_for('admin_dashboard'))
- # fetch recent data
+
+    # Fetch attendance data
     cursor.execute('SELECT * FROM attendance ORDER BY date DESC LIMIT 10')
     attendance = cursor.fetchall()
 
-    # compute variance per record for template
+    # Compute variance for attendance
     for idx, rec in enumerate(attendance):
-        # difference from next record (older)
         if idx + 1 < len(attendance):
             rec['variance'] = rec['student_count'] - attendance[idx + 1]['student_count']
         else:
             rec['variance'] = 0
 
+    # Fetch menu data
     cursor.execute('SELECT * FROM menu ORDER BY id DESC')
     menus = cursor.fetchall()
+
+    # Prepare dynamic menus data for the form (by meal type)
+    menus_by_meal = {}
+    for menu in menus:
+        items = [item.strip() for item in menu['items'].split(',')]
+        menus_by_meal[menu['meal_type'].lower()] = items
+
     cursor.close()
     conn.close()
 
-    # dynamic metrics
+    # Dashboard metrics
     total_students_today = get_today_student_count()
     meals_served = get_meals_served_count()
     predicted_waste = get_predicted_waste()
@@ -424,17 +467,20 @@ def admin_dashboard():
     pct_meals = calculate_change('meals')
     pct_waste = calculate_change('waste')
     pct_savings = calculate_change('savings')
+
     weekly_avg = calculate_weekly_average(attendance)
     pct_change_week = calculate_change_from_last_week(attendance)
     monthly_high = calculate_monthly_high(attendance)
     pct_change_month = calculate_change_from_peak(attendance)
-  
+
+    # Suggestions & Ingredients
     suggestions, ingredients = suggest_today(total_students_today)
 
     return render_template('admin_dashboard.html',
                            admin=session['admin'],
                            attendance=attendance,
                            menus=menus,
+                           menus_by_meal=menus_by_meal,  # For dynamic meal items
                            total_students_today=total_students_today,
                            meals_served=meals_served,
                            predicted_waste=predicted_waste,
@@ -444,14 +490,14 @@ def admin_dashboard():
                            pct_waste=pct_waste,
                            pct_savings=pct_savings,
                            suggestions=suggestions,
-                           ingredients=ingredients, 
+                           ingredients=ingredients,
                            item_ingredients=ITEM_INGREDIENTS,
                            weekly_avg=weekly_avg,
                            pct_change_week=pct_change_week,
                            monthly_high=monthly_high,
                            pct_change_month=pct_change_month,
-
                            datetime=datetime)
+
 
 @app.route('/edit-menu/<int:menu_id>', methods=['POST'])
 def edit_menu(menu_id):
