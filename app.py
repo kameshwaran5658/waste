@@ -399,25 +399,42 @@ def admin_dashboard():
         return redirect(url_for('admin_login'))
 
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(dictionary=True, buffered=True)
 
     if request.method == 'POST':
         form_type = request.form.get('form_type')
+        anchor_map = {
+            'attendance': '#attendance',
+            'menu': '#menus',
+            'waste': '#addwaste'
+        }
 
         if form_type == 'attendance':
-            cursor.execute(
-                'INSERT INTO attendance (date, student_count) VALUES (%s, %s)',
-                (request.form['date'], request.form['student_count'])
-            )
+            day = request.form['date']
+            student_count = request.form['student_count']
+
+            cursor.execute("SELECT COUNT(*) AS cnt FROM attendance WHERE DATE(date) = %s", (day,))
+            result = cursor.fetchone()
+            count = result['cnt'] if result and 'cnt' in result else 0
+
+            if count > 0:
+                flash(f'Attendance already submitted for {day}', 'warning')
+            else:
+                cursor.execute(
+                    'INSERT INTO attendance (date, student_count) VALUES (%s, %s)',
+                    (day, student_count)
+                )
+                flash(f'Attendance recorded for {day}', 'success')
 
         elif form_type == 'menu':
             cursor.execute(
                 'INSERT INTO menu (day, meal_type, items) VALUES (%s, %s, %s)',
                 (request.form['day'], request.form['meal_type'], request.form['items'])
             )
+            flash('Menu updated successfully!', 'success')
 
         elif form_type == 'waste':
-             cursor.execute(
+            cursor.execute(
                 '''INSERT INTO food_history 
                    (day, meal_type, item_name, actual_quantity_used, food_waste, student_count)
                    VALUES (%s, %s, %s, %s, %s, %s)''',
@@ -427,28 +444,24 @@ def admin_dashboard():
                     request.form['item_name'],
                     request.form['actual_qty'],
                     request.form['waste_qty'],
-                    request.form['student_count']  # Ensure student_count is passed from the form
+                    request.form['student_count']
                 )
             )
-        conn.commit()
-        return redirect(url_for('admin_dashboard'))
+            flash('Waste entry added successfully!', 'success')
 
-    # Fetch attendance data
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return redirect(url_for('admin_dashboard') + anchor_map.get(form_type, ''))
+
+    # ---------- GET request: Fetch dashboard data ----------
     cursor.execute('SELECT * FROM attendance ORDER BY date DESC LIMIT 10')
     attendance = cursor.fetchall()
-
-    # Compute variance for attendance
     for idx, rec in enumerate(attendance):
-        if idx + 1 < len(attendance):
-            rec['variance'] = rec['student_count'] - attendance[idx + 1]['student_count']
-        else:
-            rec['variance'] = 0
+        rec['variance'] = rec['student_count'] - attendance[idx+1]['student_count'] if idx+1 < len(attendance) else 0
 
-    # Fetch menu data
     cursor.execute('SELECT * FROM menu ORDER BY id DESC')
     menus = cursor.fetchall()
-
-    # Prepare dynamic menus data for the form (by meal type)
     menus_by_meal = {}
     for menu in menus:
         items = [item.strip() for item in menu['items'].split(',')]
@@ -457,7 +470,6 @@ def admin_dashboard():
     cursor.close()
     conn.close()
 
-    # Dashboard metrics
     total_students_today = get_today_student_count()
     meals_served = get_meals_served_count()
     predicted_waste = get_predicted_waste()
@@ -473,30 +485,78 @@ def admin_dashboard():
     monthly_high = calculate_monthly_high(attendance)
     pct_change_month = calculate_change_from_peak(attendance)
 
-    # Suggestions & Ingredients
     suggestions, ingredients = suggest_today(total_students_today)
 
-    return render_template('admin_dashboard.html',
-                           admin=session['admin'],
-                           attendance=attendance,
-                           menus=menus,
-                           menus_by_meal=menus_by_meal,  # For dynamic meal items
-                           total_students_today=total_students_today,
-                           meals_served=meals_served,
-                           predicted_waste=predicted_waste,
-                           savings_potential=savings_potential,
-                           pct_students=pct_students,
-                           pct_meals=pct_meals,
-                           pct_waste=pct_waste,
-                           pct_savings=pct_savings,
-                           suggestions=suggestions,
-                           ingredients=ingredients,
-                           item_ingredients=ITEM_INGREDIENTS,
-                           weekly_avg=weekly_avg,
-                           pct_change_week=pct_change_week,
-                           monthly_high=monthly_high,
-                           pct_change_month=pct_change_month,
-                           datetime=datetime)
+    # ---------- Pagination ----------
+    PER_PAGE = 5
+    current_page = int(request.args.get('page', 1))
+    offset = (current_page - 1) * PER_PAGE
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM food_history")
+    total_entries = cursor.fetchone()[0]
+
+    cursor.execute("""
+        SELECT day, meal_type, item_name, actual_quantity_used, food_waste, 
+               ROUND((food_waste / actual_quantity_used) * 100, 2) AS waste_pct
+        FROM food_history
+        ORDER BY day DESC
+        LIMIT %s OFFSET %s
+    """, (PER_PAGE, offset))
+    entries = cursor.fetchall()
+
+    recent_waste_entries = [
+        {
+            'date': row[0],
+            'meal_type': row[1],
+            'item_name': row[2],
+            'actual_quantity_used': row[3],
+            'waste_qty': row[4],
+            'waste_pct': row[5]
+        }
+        for row in entries
+    ]
+
+    total_pages = (total_entries + PER_PAGE - 1) // PER_PAGE
+    start_entry = offset + 1 if total_entries > 0 else 0
+    end_entry = min(offset + PER_PAGE, total_entries)
+
+    cursor.close()
+    conn.close()
+
+    return render_template(
+        'admin_dashboard.html',
+        admin=session['admin'],
+        attendance=attendance,
+        menus=menus,
+        menus_by_meal=menus_by_meal,
+        food_history=recent_waste_entries,
+        recent_waste_entries=recent_waste_entries,
+        total_students_today=total_students_today,
+        meals_served=meals_served,
+        predicted_waste=predicted_waste,
+        savings_potential=savings_potential,
+        pct_students=pct_students,
+        pct_meals=pct_meals,
+        pct_waste=pct_waste,
+        pct_savings=pct_savings,
+        suggestions=suggestions,
+        ingredients=ingredients,
+        item_ingredients=ITEM_INGREDIENTS,
+        weekly_avg=weekly_avg,
+        pct_change_week=pct_change_week,
+        monthly_high=monthly_high,
+        pct_change_month=pct_change_month,
+        datetime=datetime,
+        current_page=current_page,
+    total_pages=total_pages,
+    start_entry=start_entry,
+    end_entry=end_entry,
+    total_entries=total_entries,
+    )
+
 
 
 @app.route('/edit-menu/<int:menu_id>', methods=['POST'])
