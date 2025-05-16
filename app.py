@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, Response
 import mysql.connector
 import bcrypt
 from flask_wtf import CSRFProtect
@@ -15,6 +15,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 from statistics import variance
+from flask import jsonify
+import io
+import csv
 
 # Load environment variables
 load_dotenv()
@@ -42,7 +45,8 @@ MODEL_FILENAME = "food_quantity_model.pkl"
 FEATURES_FILENAME = "feature_columns.pkl"
 DEFAULT_COMPARE_DAYS = 7
 COST_PER_KG = 3.50
-
+PER_PAGE = 5
+ACTIVITY_PER_PAGE = 10
 
 ITEM_UNITS = {
     "idli": "pieces", "vada": "pieces", "pongal": "kg", "dosa": "pieces", "kal dosa": "pieces",
@@ -392,52 +396,45 @@ def admin_login():
             return redirect(url_for('admin_dashboard'))
         flash('Invalid credentials', 'danger')
     return render_template('admin_login.html')
-
 @app.route('/admin/dashboard', methods=['GET', 'POST'])
 def admin_dashboard():
     if 'admin' not in session:
         return redirect(url_for('admin_login'))
 
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True, buffered=True)
-
+    # --- POST (attendance, menu, waste) ---
     if request.method == 'POST':
-        form_type = request.form.get('form_type')
-        anchor_map = {
-            'attendance': '#attendance',
-            'menu': '#menus',
-            'waste': '#addwaste'
-        }
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        form_type  = request.form.get('form_type')
+        anchor_map = {'attendance':'#attendance','menu':'#menus','waste':'#addwaste'}
 
         if form_type == 'attendance':
             day = request.form['date']
-            student_count = request.form['student_count']
-
-            cursor.execute("SELECT COUNT(*) AS cnt FROM attendance WHERE DATE(date) = %s", (day,))
-            result = cursor.fetchone()
-            count = result['cnt'] if result and 'cnt' in result else 0
-
-            if count > 0:
-                flash(f'Attendance already submitted for {day}', 'warning')
+            cursor.execute(
+                "SELECT COUNT(*) AS cnt FROM attendance WHERE DATE(date)=%s", (day,)
+            )
+            cnt = cursor.fetchone()['cnt']
+            if cnt:
+                flash(f'Attendance already recorded for {day}', 'warning')
             else:
                 cursor.execute(
-                    'INSERT INTO attendance (date, student_count) VALUES (%s, %s)',
-                    (day, student_count)
+                    "INSERT INTO attendance (date, student_count) VALUES (%s,%s)",
+                    (day, request.form['student_count'])
                 )
                 flash(f'Attendance recorded for {day}', 'success')
 
         elif form_type == 'menu':
             cursor.execute(
-                'INSERT INTO menu (day, meal_type, items) VALUES (%s, %s, %s)',
+                "INSERT INTO menu (day, meal_type, items) VALUES (%s,%s,%s)",
                 (request.form['day'], request.form['meal_type'], request.form['items'])
             )
             flash('Menu updated successfully!', 'success')
 
         elif form_type == 'waste':
             cursor.execute(
-                '''INSERT INTO food_history 
+                """INSERT INTO food_history
                    (day, meal_type, item_name, actual_quantity_used, food_waste, student_count)
-                   VALUES (%s, %s, %s, %s, %s, %s)''',
+                   VALUES (%s,%s,%s,%s,%s,%s)""",
                 (
                     request.form['date'],
                     request.form['meal_type_waste'],
@@ -454,58 +451,60 @@ def admin_dashboard():
         conn.close()
         return redirect(url_for('admin_dashboard') + anchor_map.get(form_type, ''))
 
-    # ---------- GET request: Fetch dashboard data ----------
+    # --- GET: Attendance & Menu ---
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True, buffered=True)
     cursor.execute('SELECT * FROM attendance ORDER BY date DESC LIMIT 10')
     attendance = cursor.fetchall()
     for idx, rec in enumerate(attendance):
-        rec['variance'] = rec['student_count'] - attendance[idx+1]['student_count'] if idx+1 < len(attendance) else 0
-
+        rec['variance'] = (
+            rec['student_count'] -
+            attendance[idx + 1]['student_count']
+            if idx + 1 < len(attendance) else 0
+        )
     cursor.execute('SELECT * FROM menu ORDER BY id DESC')
     menus = cursor.fetchall()
-    menus_by_meal = {}
-    for menu in menus:
-        items = [item.strip() for item in menu['items'].split(',')]
-        menus_by_meal[menu['meal_type'].lower()] = items
-
     cursor.close()
     conn.close()
 
+    menus_by_meal = {
+        m['meal_type'].lower(): [i.strip() for i in m['items'].split(',')]
+        for m in menus
+    }
+
+    # --- Core metrics & suggestions ---
     total_students_today = get_today_student_count()
-    meals_served = get_meals_served_count()
-    predicted_waste = get_predicted_waste()
-    savings_potential = calculate_savings_potential()
-
-    pct_students = calculate_change('students')
-    pct_meals = calculate_change('meals')
-    pct_waste = calculate_change('waste')
-    pct_savings = calculate_change('savings')
-
-    weekly_avg = calculate_weekly_average(attendance)
-    pct_change_week = calculate_change_from_last_week(attendance)
-    monthly_high = calculate_monthly_high(attendance)
-    pct_change_month = calculate_change_from_peak(attendance)
-
+    meals_served         = get_meals_served_count()
+    predicted_waste      = get_predicted_waste()
+    savings_potential    = calculate_savings_potential()
+    pct_students         = calculate_change('students')
+    pct_meals            = calculate_change('meals')
+    pct_waste            = calculate_change('waste')
+    pct_savings          = calculate_change('savings')
+    weekly_avg           = calculate_weekly_average(attendance)
+    pct_change_week      = calculate_change_from_last_week(attendance)
+    monthly_high         = calculate_monthly_high(attendance)
+    pct_change_month     = calculate_change_from_peak(attendance)
     suggestions, ingredients = suggest_today(total_students_today)
 
-    # ---------- Pagination ----------
-    PER_PAGE = 5
+    # --- Pagination: food_history ---
     current_page = int(request.args.get('page', 1))
-    offset = (current_page - 1) * PER_PAGE
+    offset       = (current_page - 1) * PER_PAGE
 
     conn = get_db_connection()
     cursor = conn.cursor()
-
     cursor.execute("SELECT COUNT(*) FROM food_history")
     total_entries = cursor.fetchone()[0]
-
     cursor.execute("""
-        SELECT day, meal_type, item_name, actual_quantity_used, food_waste, 
-               ROUND((food_waste / actual_quantity_used) * 100, 2) AS waste_pct
+        SELECT day, meal_type, item_name, actual_quantity_used, food_waste,
+               ROUND((food_waste/actual_quantity_used)*100,2) AS waste_pct
         FROM food_history
         ORDER BY day DESC
         LIMIT %s OFFSET %s
     """, (PER_PAGE, offset))
-    entries = cursor.fetchall()
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
 
     recent_waste_entries = [
         {
@@ -516,24 +515,103 @@ def admin_dashboard():
             'waste_qty': row[4],
             'waste_pct': row[5]
         }
-        for row in entries
+        for row in rows
     ]
-
     total_pages = (total_entries + PER_PAGE - 1) // PER_PAGE
-    start_entry = offset + 1 if total_entries > 0 else 0
-    end_entry = min(offset + PER_PAGE, total_entries)
+    start_entry = offset + 1 if total_entries else 0
+    end_entry   = min(offset + PER_PAGE, total_entries)
 
+    # --- Analytics (last 30 days) ---
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    # Waste trend
+    cursor.execute("""
+        SELECT DATE(day) AS day, SUM(food_waste) AS total_waste
+        FROM food_history
+        WHERE day >= CURDATE() - INTERVAL 30 DAY
+        GROUP BY DATE(day) ORDER BY day
+    """)
+    wt = cursor.fetchall()
+    waste_trend_labels = [r['day'].strftime('%b %d') for r in wt]
+    waste_trend_data   = [float(r['total_waste']) for r in wt]
+    # Savings
+    savings_labels = waste_trend_labels
+    savings_data   = [round(w * COST_PER_KG, 2) for w in waste_trend_data]
+    # Top items
+    cursor.execute("""
+        SELECT item_name, SUM(food_waste) AS total_waste
+        FROM food_history
+        WHERE day >= CURDATE() - INTERVAL 30 DAY
+        GROUP BY item_name ORDER BY total_waste DESC LIMIT 5
+    """)
+    ti = cursor.fetchall()
+    waste_items_labels = [r['item_name'] for r in ti]
+    waste_items_data   = [float(r['total_waste']) for r in ti]
+    # Attendance vs Waste
+    cursor.execute("""
+        SELECT a.date, a.student_count, COALESCE(SUM(f.food_waste),0) AS waste
+        FROM attendance a
+        LEFT JOIN food_history f ON DATE(f.day)=a.date
+        WHERE a.date >= CURDATE() - INTERVAL 30 DAY
+        GROUP BY a.date ORDER BY a.date
+    """)
+    aw = cursor.fetchall()
+    attendance_labels = [r['date'].strftime('%b %d') for r in aw]
+    attendance_data   = [r['student_count'] for r in aw]
+    waste_data        = [float(r['waste']) for r in aw]
+    # Meal type breakdown
+    cursor.execute("""
+        SELECT meal_type, SUM(food_waste) AS waste
+        FROM food_history
+        WHERE day >= CURDATE() - INTERVAL 30 DAY
+        GROUP BY meal_type
+    """)
+    mw = cursor.fetchall()
+    meal_waste_labels = [r['meal_type'].capitalize() for r in mw]
+    meal_waste_data   = [float(r['waste']) for r in mw]
     cursor.close()
     conn.close()
+
+    # --- Load admin settings ---
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        "SELECT email, email_alerts FROM admins WHERE id=%s",
+        (session['admin']['id'],)
+    )
+    admin_settings = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    session['admin'].update({
+        'email': admin_settings['email'],
+        'email_alerts': bool(admin_settings['email_alerts'])
+    })
+
+    # --- Activity log pagination ---
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT COUNT(*) AS cnt FROM activity_log")
+    total_acts = cursor.fetchone()['cnt']
+    cursor.execute("""
+        SELECT timestamp, type, details
+        FROM activity_log
+        ORDER BY timestamp DESC
+        LIMIT %s OFFSET %s
+    """, (ACTIVITY_PER_PAGE, (current_page - 1)*ACTIVITY_PER_PAGE))
+    activity_logs = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    total_activity_pages = (total_acts + ACTIVITY_PER_PAGE - 1) // ACTIVITY_PER_PAGE
 
     return render_template(
         'admin_dashboard.html',
         admin=session['admin'],
+        # Attendance & Menu
         attendance=attendance,
         menus=menus,
         menus_by_meal=menus_by_meal,
-        food_history=recent_waste_entries,
-        recent_waste_entries=recent_waste_entries,
+        item_ingredients=ITEM_INGREDIENTS,
+        # Metrics & Suggestions
         total_students_today=total_students_today,
         meals_served=meals_served,
         predicted_waste=predicted_waste,
@@ -542,22 +620,118 @@ def admin_dashboard():
         pct_meals=pct_meals,
         pct_waste=pct_waste,
         pct_savings=pct_savings,
-        suggestions=suggestions,
-        ingredients=ingredients,
-        item_ingredients=ITEM_INGREDIENTS,
         weekly_avg=weekly_avg,
         pct_change_week=pct_change_week,
         monthly_high=monthly_high,
         pct_change_month=pct_change_month,
-        datetime=datetime,
+        suggestions=suggestions,
+        ingredients=ingredients,
+        # Waste history pagination
+        recent_waste_entries=recent_waste_entries,
+        total_entries=total_entries,
         current_page=current_page,
-    total_pages=total_pages,
-    start_entry=start_entry,
-    end_entry=end_entry,
-    total_entries=total_entries,
+        total_pages=total_pages,
+        start_entry=start_entry,
+        end_entry=end_entry,
+        # Analytics charts
+        waste_trend_labels=waste_trend_labels,
+        waste_trend_data=waste_trend_data,
+        savings_labels=savings_labels,
+        savings_data=savings_data,
+        waste_items_labels=waste_items_labels,
+        waste_items_data=waste_items_data,
+        attendance_labels=attendance_labels,
+        attendance_data=attendance_data,
+        waste_data=waste_data,
+        meal_waste_labels=meal_waste_labels,
+        meal_waste_data=meal_waste_data,
+        # Activity log
+        activity_logs=activity_logs,
+        total_activity_pages=total_activity_pages,
+        datetime=datetime
     )
 
+@app.route('/admin/update-settings', methods=['POST'], endpoint='admin_update_settings')
+def admin_update_settings():
+    if 'admin' not in session:
+        return redirect(url_for('admin_login'))
 
+    form_type = request.form.get('form_type', 'settings')
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    if form_type == 'notifications':
+        # Toggle email_alerts flag
+        alerts = 1 if request.form.get('emailAlerts') == 'on' else 0
+        cursor.execute(
+            "UPDATE admins SET email_alerts=%s WHERE id=%s",
+            (alerts, session['admin']['id'])
+        )
+        session['admin']['email_alerts'] = bool(alerts)
+        flash('Notification preferences updated.', 'success')
+
+    else:
+        # Profile & password update
+        full_name    = request.form['full_name']
+        new_password = request.form.get('new_password', '')
+        confirm_pass = request.form.get('confirm_password', '')
+
+        if new_password:
+            if new_password != confirm_pass:
+                flash('Passwords do not match.', 'danger')
+                return redirect(url_for('admin_dashboard') + '#settings')
+            hashed = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
+            cursor.execute(
+                "UPDATE admins SET full_name=%s, password_hash=%s WHERE id=%s",
+                (full_name, hashed, session['admin']['id'])
+            )
+        else:
+            cursor.execute(
+                "UPDATE admins SET full_name=%s WHERE id=%s",
+                (full_name, session['admin']['id'])
+            )
+
+        session['admin']['full_name'] = full_name
+        flash('Profile settings updated.', 'success')
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return redirect(url_for('admin_dashboard') + '#settings')
+
+
+@app.route('/admin/export_activity_log')
+def export_activity_log():
+    if 'admin' not in session:
+        return redirect(url_for('admin_login'))
+
+    page   = int(request.args.get('page', 1))
+    offset = (page - 1) * ACTIVITY_PER_PAGE
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT timestamp, type, details
+        FROM activity_log
+        ORDER BY timestamp DESC
+        LIMIT %s OFFSET %s
+    """, (ACTIVITY_PER_PAGE, offset))
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    si = io.StringIO()
+    writer = csv.writer(si)
+    writer.writerow(['Timestamp', 'Action', 'Details'])
+    for ts, t, det in rows:
+        writer.writerow([ts, t, det])
+
+    return Response(
+        si.getvalue(),
+        mimetype='text/csv',
+        headers={'Content-Disposition': f'attachment;filename=activity_log_page_{page}.csv'}
+    )
 
 @app.route('/edit-menu/<int:menu_id>', methods=['POST'])
 def edit_menu(menu_id):

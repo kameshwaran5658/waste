@@ -12,72 +12,88 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     
     :root {
-      --primary: #7c3aed;
-      --primary-light: #8b5cf6;
-      --secondary: #6348d1;
-      --accent: #4c1d95;
-      --dark: #2c384b;
-      --light: #f8f9fa;
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --secondary: #4338ca;
+      --accent: #3730a3;
+      --dark: #111827;
+      --light: #f9fafb;
       --success: #10b981;
-      --warning: #f8961e;
-      --danger: #f72585;
-      --info: #7209b7;
-      --my:#5fb6e9;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
     }
     
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f5f7ff;
+      background-color: #f3f4f6;
       min-height: 100vh;
       color: var(--dark);
+      transition: all 0.3s ease;
+    }
+    
+    .dark body {
+      background-color: #1f2937;
+      color: #f3f4f6;
+    }
+    
+    .sidebar {
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      color: white;
+      width: 280px;
+      transition: all 0.3s ease;
+    }
+    
+    .sidebar-link {
+      transition: all 0.2s ease;
+    }
+    
+    .sidebar-link:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar-link.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-left: 3px solid white;
     }
     
     .card {
       background: white;
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
       transition: all 0.3s ease;
     }
     
+    .dark .card {
+      background: #1f2937;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    }
-    
-    .sidebar {
-      background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
-      color: white;
-    }
-    
-    .sidebar-link.active {
-      background: rgba(255, 255, 255, 0.15);
-      border-left: 3px solid white;
-    }
-    
-    .sidebar-link:hover:not(.active) {
-      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
     }
     
     .btn-primary {
-      background: var(--primary);
+      background-color: var(--primary);
       color: white;
       transition: all 0.3s ease;
     }
     
     .btn-primary:hover {
-      background: var(--secondary);
-      transform: translateY(-2px);
+      background-color: var(--secondary);
+      transform: translateY(-1px);
     }
     
     .btn-secondary {
-      background: white;
+      background-color: white;
       color: var(--primary);
       border: 1px solid var(--primary);
       transition: all 0.3s ease;
     }
     
     .btn-secondary:hover {
-      background: var(--primary-light);
+      background-color: var(--primary-light);
       color: white;
     }
     
@@ -91,48 +107,53 @@
     }
     
     .badge-primary {
-      background: rgba(67, 97, 238, 0.1);
+      background-color: rgba(79, 70, 229, 0.1);
       color: var(--primary);
     }
     
     .badge-success {
-      background: rgba(76, 201, 240, 0.1);
+      background-color: rgba(16, 185, 129, 0.1);
       color: var(--success);
     }
     
     .badge-warning {
-      background: rgba(248, 150, 30, 0.1);
+      background-color: rgba(245, 158, 11, 0.1);
       color: var(--warning);
     }
     
     .badge-danger {
-      background: rgba(247, 37, 133, 0.1);
+      background-color: rgba(239, 68, 68, 0.1);
       color: var(--danger);
     }
     
     .badge-info {
-      background: rgba(114, 9, 183, 0.1);
+      background-color: rgba(59, 130, 246, 0.1);
       color: var(--info);
     }
     
     .input-field {
-      border: 1px solid #e2e8f0;
+      border: 1px solid #e5e7eb;
       border-radius: 8px;
       transition: all 0.3s ease;
     }
     
     .input-field:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
     }
     
     .table th {
-      background: #f8fafc;
-      color: #64748b;
+      background: #f9fafb;
+      color: #6b7280;
       font-weight: 600;
       text-transform: uppercase;
       font-size: 12px;
       letter-spacing: 0.5px;
+    }
+    
+    .dark .table th {
+      background: #1f2937;
+      color: #9ca3af;
     }
     
     .table tr {
@@ -140,75 +161,26 @@
     }
     
     .table tr:hover {
-      background: #f8fafc;
-    }
-    
-    .scrollbar-hide::-webkit-scrollbar {
-      display: none;
-    }
-    
-    .scrollbar-hide {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    
-    .animate-float {
-      animation: float 6s ease-in-out infinite;
-    }
-    
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0px); }
-    }
-    
-    .pulse {
-      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    
-    /* Dark mode styles */
-    .dark body {
-      background-color: #404550;
-      color: #f8fafc;
-    }
-    
-    .dark .card {
-      background: #1e293b;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
-    
-    .dark .input-field {
-      background: #1e293b;
-      border-color: #334155;
-      color: white;
-    }
-    
-    .dark .table th {
-      background: #1e293b;
-      color: #94a3b8;
+      background: #f9fafb;
     }
     
     .dark .table tr:hover {
-      background: #1e293b;
+      background: #1f2937;
     }
     
-    /* Responsive sidebar */
+    /* Mobile sidebar styles */
     @media (max-width: 768px) {
       .sidebar {
-        transform: translateX(-100%);
         position: fixed;
+        left: -280px;
+        top: 0;
+        bottom: 0;
         z-index: 50;
         height: 100vh;
-        width: 280px;
       }
       
       .sidebar.open {
-        transform: translateX(0);
+        left: 0;
       }
       
       .overlay {
@@ -225,37 +197,92 @@
       .overlay.open {
         display: block;
       }
+      
+      .main-content {
+        margin-left: 0 !important;
+      }
+    }
+    
+    /* Animations */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: #c7c7c7;
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+    
+    .dark ::-webkit-scrollbar-track {
+      background: #374151;
+    }
+    
+    .dark ::-webkit-scrollbar-thumb {
+      background: #4b5563;
+    }
+    
+    .dark ::-webkit-scrollbar-thumb:hover {
+      background: #6b7280;
     }
   </style>
 </head>
 <body class="min-h-screen">
   <!-- Mobile Menu Button -->
   <button id="mobileMenuButton" class="md:hidden fixed top-4 left-4 z-50 p-3 rounded-full bg-white shadow-lg pulse">
-    <i class="fas fa-bars text-primary text-xl"></i>
+    <i class="fas fa-bars text-indigo-600 text-xl"></i>
   </button>
 
   <!-- Theme Toggle -->
   <button id="themeToggle" class="fixed top-4 right-4 z-50 p-3 rounded-full bg-white shadow-lg">
-    <i class="fas fa-moon text-primary text-xl"></i>
+    <i class="fas fa-moon text-indigo-600 text-xl"></i>
   </button>
 
   <!-- Overlay for mobile menu -->
   <div id="overlay" class="overlay"></div>
 
   <!-- Sidebar -->
-  <div id="sidebar" class="sidebar w-64 fixed h-full transition-transform duration-300 ease-in-out">
+  <div id="sidebar" class="sidebar fixed h-full transition-all duration-300 ease-in-out">
     <div class="p-4 flex items-center justify-between border-b border-white border-opacity-20">
       <div class="flex items-center space-x-3">
         <div class="w-10 h-10 rounded-full bg-white bg-opacity-20 flex items-center justify-center shadow-lg">
           <i class="fas fa-leaf text-white"></i>
         </div>
-        <h1 class="text-xl font-bold text-white"> EcoBite</h1>
+        <h1 class="text-xl font-bold text-white">EcoBite</h1>
       </div>
       <button id="closeSidebar" class="md:hidden text-white">
         <i class="fas fa-times"></i>
       </button>
     </div>
-    
+
     <div class="p-4">
       <div class="flex items-center space-x-3 mb-6 p-3 rounded-lg bg-white bg-opacity-10">
         <div class="w-12 h-12 rounded-full bg-white bg-opacity-20 flex items-center justify-center shadow-lg">
@@ -266,7 +293,7 @@
           <p class="text-sm text-white text-opacity-70">Admin</p>
         </div>
       </div>
-      
+
       <nav class="space-y-1">
         <a onclick="showSection('dashboard')" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg text-white text-opacity-90 hover:text-white">
           <i class="fas fa-tachometer-alt w-5 text-center"></i>
@@ -297,7 +324,7 @@
           <span>Logout</span>
         </a>
       </nav>
-      
+
       <!-- Quick Stats -->
       <div class="mt-8 bg-white bg-opacity-10 p-4 rounded-lg">
         <h3 class="text-sm font-semibold text-white text-opacity-70 mb-2">QUICK STATS</h3>
@@ -320,143 +347,141 @@
   </div>
 
   <!-- Main Content -->
-  <div class="md:ml-64 transition-all duration-300">
+  <div class="main-content transition-all duration-300 ml-0 md:ml-[280px]">
     <!-- Dashboard Section -->
     <div id="dashboard" class="p-4 md:p-8">
       <!-- Header -->
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h2 class="text-2xl md:text-3xl font-bold  dark:text-white">Dashboard Overview</h2>
-          <p class=" dark:text-gray-400">Welcome back, {{ admin.full_name.split(' ')[0] }}! Here's what's happening today.</p>
+          <h2 class="text-2xl md:text-3xl font-bold dark:text-white">Dashboard Overview</h2>
+          <p class="text-gray-500 dark:text-gray-400">Welcome back, {{ admin.full_name.split(' ')[0] }}! Here's what's happening today.</p>
         </div>
-        <div class="flex items-center space-x-2 bg-white dark:bg-slate-800 px-4 py-2 rounded-full shadow-sm">
+        <div class="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-full shadow-sm">
           <span class="text-sm text-blue-500 dark:text-gray-300">{{ datetime.now().strftime('%A, %d %B %Y') }}</span>
-          <div class="w-8 h-8 rounded-full bg-primary bg-opacity-10 flex items-center justify-center shadow">
-            <i class="fas fa-calendar-day text-blue-500 text-sm"></i>
+          <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center shadow">
+            <i class="fas fa-calendar-day text-indigo-500 text-sm"></i>
           </div>
         </div>
       </div>
-      
+
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <!-- Total Students -->
         <div class="card p-6 animate-float">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm font-medium  dark:text-gray-400">Total Students Today</p>
-              <h3 class="text-2xl font-bold  dark:text-white mt-1">{{ total_students_today }}</h3>
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Students Today</p>
+              <h3 class="text-2xl font-bold dark:text-white mt-1">{{ total_students_today }}</h3>
               <div class="flex items-center mt-1">
                 <span class="badge badge-success">
                   <i class="fas fa-arrow-up mr-1 text-xs"></i> {{ pct_students }}%
                 </span>
-                <span class="text-xs  dark:text-gray-400 ml-2">from yesterday</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">from yesterday</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-full bg-primary bg-opacity-10 flex items-center justify-center">
-              <i class="fas fa-users text-primary"></i>
+            <div class="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+              <i class="fas fa-users text-indigo-500"></i>
             </div>
           </div>
         </div>
-      
+
         <!-- Predicted Waste -->
         <div class="card p-6 animate-float" style="animation-delay: 0.2s;">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm font-medium  dark:text-gray-400">Predicted Waste</p>
-              <h3 class="text-2xl font-bold  dark:text-white mt-1">{{ predicted_waste }} kg</h3>
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Predicted Waste</p>
+              <h3 class="text-2xl font-bold dark:text-white mt-1">{{ predicted_waste }} kg</h3>
               <div class="flex items-center mt-1">
                 <span class="badge badge-danger">
                   <i class="fas fa-arrow-down mr-1 text-xs"></i> {{ pct_waste }}%
                 </span>
-                <span class="text-xs  dark:text-gray-400 ml-2">from yesterday</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">from yesterday</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-full bg-red-500 bg-opacity-10 flex items-center justify-center">
+            <div class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center">
               <i class="fas fa-trash-alt text-red-500"></i>
             </div>
           </div>
         </div>
-      
+
         <!-- Savings Potential -->
         <div class="card p-6 animate-float" style="animation-delay: 0.4s;">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm font-medium  dark:text-gray-400">Savings Potential</p>
-              <h3 class="text-2xl font-bold  dark:text-white mt-1">${{ savings_potential }}</h3>
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Savings Potential</p>
+              <h3 class="text-2xl font-bold dark:text-white mt-1">${{ savings_potential }}</h3>
               <div class="flex items-center mt-1">
                 <span class="badge badge-success">
                   <i class="fas fa-arrow-up mr-1 text-xs"></i> {{ pct_savings }}%
                 </span>
-                <span class="text-xs  dark:text-gray-400 ml-2">from last week</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">from last week</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-full bg-green-500 bg-opacity-10 flex items-center justify-center">
+            <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
               <i class="fas fa-dollar-sign text-green-500"></i>
             </div>
           </div>
         </div>
-      
+
         <!-- Meals Served -->
         <div class="card p-6 animate-float" style="animation-delay: 0.6s;">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm font-medium  dark:text-gray-400">Meals Served</p>
-              <h3 class="text-2xl font-bold  dark:text-white mt-1">{{ meals_served }}</h3>
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Meals Served</p>
+              <h3 class="text-2xl font-bold dark:text-white mt-1">{{ meals_served }}</h3>
               <div class="flex items-center mt-1">
                 <span class="badge badge-success">
                   <i class="fas fa-arrow-up mr-1 text-xs"></i> {{ pct_meals }}%
                 </span>
-                <span class="text-xs  dark:text-gray-400 ml-2">from yesterday</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">from yesterday</span>
               </div>
             </div>
-            <div class="w-12 h-12 rounded-full bg-purple-500 bg-opacity-10 flex items-center justify-center">
+            <div class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
               <i class="fas fa-utensils text-purple-500"></i>
             </div>
           </div>
         </div>
       </div>
-      
-      
-      <!-- Today's Meal Predictions -->
+
       {% if total_students_today > 0 %}
-<div class="mb-8">
-  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-    <h3 class="text-xl font-bold  dark:text-white">Today's Meal Predictions</h3>
-    <div class="flex space-x-2">
-      <button class="px-3 py-1 text-sm btn-secondary rounded-lg" onclick="location.reload()">
-        <i class="fas fa-sync-alt mr-1"></i> Refresh
-      </button>
+  <!-- Today's Meal Predictions -->
+  <div class="mb-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+      <h3 class="text-xl font-bold dark:text-white">Today's Meal Predictions</h3>
+      <div class="flex space-x-2">
+        <button class="px-3 py-1 text-sm btn-secondary rounded-lg" onclick="location.reload()">
+          <i class="fas fa-sync-alt mr-1"></i> Refresh
+        </button>
+      </div>
     </div>
-  </div>
-  
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    {% set meal_colors = {
-      'Breakfast': 'bg-orange-500',
-      'Lunch':     'bg-blue-500',
-      'Snacks':    'bg-green-500',
-      'Dinner':    'bg-red-500'
-    } %}
-    
-    {% set meal_icons = {
-      'Breakfast': 'fas fa-mug-hot',
-      'Lunch':     'fas fa-hamburger',
-      'Snacks':    'fas fa-cookie-bite',
-      'Dinner':    'fas fa-pizza-slice'
-    } %}
-    
-    {% for meal in ['Breakfast','Lunch','Snacks','Dinner'] %}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {% set meal_colors = {
+        'Breakfast': 'bg-orange-500',
+        'Lunch':     'bg-blue-500',
+        'Snacks':    'bg-green-500',
+        'Dinner':    'bg-red-500'
+      } %}
+      {% set meal_icons = {
+        'Breakfast': 'fas fa-mug-hot',
+        'Lunch':     'fas fa-hamburger',
+        'Snacks':    'fas fa-cookie-bite',
+        'Dinner':    'fas fa-pizza-slice'
+      } %}
+
+      {% for meal in ['Breakfast','Lunch','Snacks','Dinner'] %}
       <div class="card overflow-hidden">
         <div class="{{ meal_colors[meal] }} p-4 flex items-center text-white">
           <i class="{{ meal_icons[meal] }} text-xl mr-3"></i>
           <h4 class="font-bold">{{ meal }}</h4>
         </div>
-        
+
         <div class="p-4">
           {% set meal_suggestions = suggestions | selectattr('meal_type','equalto',meal) | list %}
           {% if meal_suggestions %}
             <ul class="space-y-3">
               {% for item in meal_suggestions %}
-                <li class="flex justify-between items-center p-2 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg cursor-pointer transition-colors"
+                <li class="flex justify-between items-center p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg cursor-pointer transition-colors"
                     onclick="openIngredientModal('{{ item.item_name|lower }}')">
                   <div class="flex items-center">
                     <i class="fas fa-concierge-bell text-gray-400 mr-2"></i>
@@ -475,129 +500,109 @@
           {% endif %}
         </div>
       </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
-</div>
+
+  <!-- Ingredients Needed Today -->
+  <div class="card overflow-hidden mb-8">
+    <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <h3 class="text-xl font-bold dark:text-white">Ingredients Needed Today</h3>
+      <div class="flex space-x-2">
+        <button class="px-3 py-1 text-sm btn-secondary rounded-lg">
+          <i class="fas fa-download mr-1"></i> Export
+        </button>
+        <button class="px-3 py-1 text-sm btn-primary rounded-lg">
+          <i class="fas fa-cart-plus mr-1"></i> Order All
+        </button>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead>
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Ingredient</th>
+            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Required Quantity</th>
+            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Stock Available</th>
+            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+          {% if ingredients %}
+            {% for ing in ingredients %}
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
+                    <i class="fas fa-carrot text-green-500"></i>
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-blue-500 dark:text-white">{{ ing.ingredient | capitalize }}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400">Category: Vegetables</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="badge badge-primary">{{ ing.required_quantity }}</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
+                </div>
+                <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">75% in stock</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <button class="p-2 text-indigo-500 hover:text-indigo-700 dark:hover:text-indigo-400">
+                  <i class="fas fa-cart-plus"></i>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="4" class="px-6 py-4 text-center text-gray-400">
+                <i class="fas fa-info-circle mr-1"></i> No ingredient data available
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 {% else %}
   <div class="mb-8 p-4 bg-yellow-100 rounded-lg text-yellow-800">
     <i class="fas fa-exclamation-triangle mr-2"></i>
-    Please enter today’s attendance to see meal predictions.
+    Please enter today's attendance to see Ingredients predictions.
   </div>
 {% endif %}
 
-<!-- Ingredient Modal -->
-<div id="ingredientModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg w-80">
-    <h4 class="text-lg font-bold mb-4">Ingredients Needed</h4>
-    <ul id="ingredientList" class="list-disc list-inside space-y-2 mb-4"></ul>
-    <button class="px-4 py-2 btn-secondary rounded-lg" onclick="closeModal('ingredientModal')">Close</button>
-  </div>
-</div>
 
-
-      
-      <!-- Ingredients Needed Today -->
-      <div class="card overflow-hidden mb-8">
-        <div class="p-4 border-b border-gray-200 dark:border-slate-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <h3 class="text-xl font-bold  dark:text-white">Ingredients Needed Today</h3>
-          <div class="flex space-x-2">
-            <button class="px-3 py-1 text-sm btn-secondary rounded-lg">
-              <i class="fas fa-download mr-1"></i> Export
-            </button>
-            <button class="px-3 py-1 text-sm btn-primary rounded-lg">
-              <i class="fas fa-cart-plus mr-1"></i> Order All
-            </button>
-          </div>
-        </div>
-        
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700 table">
-            <thead>
-              <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Ingredient
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Required Quantity
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Stock Available
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
-              {% if ingredients %}
-                {% for ing in ingredients %}
-                <tr>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-500 bg-opacity-10 flex items-center justify-center">
-                        <i class="fas fa-carrot text-green-500"></i>
-                      </div>
-                      <div class="ml-4">
-                        <div class="text-sm font-medium text-blue-500 dark:text-white">{{ ing.ingredient | capitalize }}</div>
-                        <div class="text-xs  dark:text-gray-400">Category: Vegetables</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="badge badge-primary">
-                      {{ ing.required_quantity }}
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="w-full bg-gray-200 dark:bg-slate-600 rounded-full h-2">
-                      <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
-                    </div>
-                    <span class="text-xs  dark:text-gray-400 mt-1">75% in stock</span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <button class="p-2 text-primary hover:text-primary-dark">
-                      <i class="fas fa-cart-plus"></i>
-                    </button>
-                  </td>
-                </tr>
-                {% endfor %}
-              {% else %}
-              <tr>
-                <td colspan="4" class="px-6 py-4 text-center text-gray-400">
-                  <i class="fas fa-info-circle mr-1"></i> No ingredient data available
-                </td>
-              </tr>
-              {% endif %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      
       <!-- Waste Reduction Tips -->
       <div class="card p-6">
-        <h3 class="text-xl font-bold  dark:text-white mb-4">Waste Reduction Tips</h3>
+        <h3 class="text-xl font-bold dark:text-white mb-4">Waste Reduction Tips</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border-l-4 border-orange-500">
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-lg border-l-4 border-orange-500">
             <div class="flex items-center mb-2">
-              <div class="w-8 h-8 rounded-full bg-orange-500 bg-opacity-10 flex items-center justify-center mr-3">
+              <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-3">
                 <i class="fas fa-recycle text-orange-500"></i>
               </div>
               <h4 class="font-medium">Portion Control</h4>
             </div>
             <p class="text-sm text-gray-600 dark:text-gray-300">Adjust serving sizes based on historical consumption data to minimize leftovers.</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border-l-4 border-blue-500">
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-lg border-l-4 border-blue-500">
             <div class="flex items-center mb-2">
-              <div class="w-8 h-8 rounded-full bg-blue-500 bg-opacity-10 flex items-center justify-center mr-3">
+              <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
                 <i class="fas fa-chart-line text-blue-500"></i>
               </div>
               <h4 class="font-medium">Demand Forecasting</h4>
             </div>
             <p class="text-sm text-gray-600 dark:text-gray-300">Use our predictive analytics to better estimate daily meal requirements.</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border-l-4 border-purple-500">
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-lg border-l-4 border-purple-500">
             <div class="flex items-center mb-2">
-              <div class="w-8 h-8 rounded-full bg-purple-500 bg-opacity-10 flex items-center justify-center mr-3">
+              <div class="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-3">
                 <i class="fas fa-utensils text-purple-500"></i>
               </div>
               <h4 class="font-medium">Creative Reuse</h4>
@@ -607,56 +612,56 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Attendance Section -->
     <div id="attendance" class="hidden p-4 md:p-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h2 class="text-2xl md:text-3xl font-bold  dark:text-white">Attendance Management</h2>
-          <p class=" dark:text-gray-400">Track and manage student attendance records</p>
+          <h2 class="text-2xl md:text-3xl font-bold dark:text-white">Attendance Management</h2>
+          <p class="text-gray-500 dark:text-gray-400">Track and manage student attendance records</p>
         </div>
-        <div class="flex items-center space-x-2 bg-white dark:bg-slate-800 px-4 py-2 rounded-full shadow-sm">
+        <div class="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-full shadow-sm">
           <span class="text-sm text-blue-500 dark:text-gray-300">{{ datetime.now().strftime('%A, %d %B %Y') }}</span>
         </div>
       </div>
-      
+
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div class="lg:col-span-2 card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">Record New Attendance</h3>
+          <h3 class="text-xl font-bold dark:text-white mb-4">Record New Attendance</h3>
           <form method="POST" action="{{ url_for('admin_dashboard') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="form_type" value="attendance">
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Date</label>
-                <input type="date" class="w-full px-3 py-2 input-field" 
+                <input type="date" class="w-full px-3 py-2 input-field"
                        name="date" value="{{ datetime.now().strftime('%Y-%m-%d') }}" required>
               </div>
               <div>
                 <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Student Count</label>
-                <input type="number" class="w-full px-3 py-2 input-field" 
+                <input type="number" class="w-full px-3 py-2 input-field"
                        name="student_count" min="1" required placeholder="Enter number of students">
               </div>
             </div>
-            
+
             <div class="mb-4">
               <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Notes</label>
-              <textarea class="w-full px-3 py-2 input-field" 
-                        name="notes" placeholder="Any special circumstances?"></textarea>
+              <textarea class="w-full px-3 py-2 input-field"
+                       name="notes" placeholder="Any special circumstances?"></textarea>
             </div>
-            
+
             <button type="submit" class="w-full btn-primary py-2 px-4 rounded-lg">
               <i class="fas fa-save mr-2"></i> Save Attendance
             </button>
           </form>
         </div>
-        
+
         <div class="card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">Attendance Insights</h3>
+          <h3 class="text-xl font-bold dark:text-white mb-4">Attendance Insights</h3>
           <div class="space-y-4">
             <!-- Today's Attendance -->
-            <div class="p-3 bg-white dark:bg-slate-800 rounded-lg">
+            <div class="p-3 bg-white dark:bg-gray-800 rounded-lg">
               <p class="text-sm font-medium text-green-500 dark:text-gray-300">Today's Attendance</p>
               <h4 class="text-2xl font-bold text-blue-500 dark:text-white">{{ total_students_today }}</h4>
               <div class="flex items-center mt-1">
@@ -666,47 +671,46 @@
                 <span class="text-xs text-blue-500 dark:text-gray-400 ml-2">from yesterday</span>
               </div>
             </div>
-        
+
             <!-- Weekly Average -->
-            <div class="p-3 bg-white dark:bg-slate-800 rounded-lg">
+            <div class="p-3 bg-white dark:bg-gray-800 rounded-lg">
               <p class="text-sm font-medium text-green-500 dark:text-gray-300">Weekly Average</p>
               <h4 class="text-2xl font-bold text-blue-500 dark:text-white">{{ weekly_avg }}</h4>
               <div class="flex items-center mt-1">
                 <span class="badge badge-success">
                   <i class="fas fa-arrow-up mr-1 text-xs"></i> {{ pct_change_week }}%
                 </span>
-                <span class="text-xs  dark:text-gray-400 ml-2">from last week</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">from last week</span>
               </div>
             </div>
-        
+
             <!-- Monthly High -->
-            <div class="p-3 bg-white dark:bg-slate-800 rounded-lg ">
+            <div class="p-3 bg-white dark:bg-gray-800 rounded-lg">
               <p class="text-sm font-medium text-green-500 dark:text-gray-300">Monthly High</p>
               <h4 class="text-2xl font-bold text-blue-500 dark:text-white">{{ monthly_high }}</h4>
               <div class="flex items-center mt-1">
                 <span class="badge badge-danger">
                   <i class="fas fa-arrow-down mr-1 text-xs"></i> {{ pct_change_month }}%
                 </span>
-                <span class="text-xs  dark:text-gray-400 ml-2">from peak</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">from peak</span>
               </div>
             </div>
           </div>
         </div>
-        </div>
-        
-      
+      </div>
+
       <div class="card overflow-hidden">
-        <div class="p-4 border-b border-gray-200 dark:border-slate-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <h3 class="text-xl font-bold  dark:text-white">Recent Attendance Records</h3>
+        <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <h3 class="text-xl font-bold dark:text-white">Recent Attendance Records</h3>
           <div class="relative w-full md:w-auto">
-            <input type="text" id="attendanceFilter" placeholder="Search records..." 
+            <input type="text" id="attendanceFilter" placeholder="Search records..."
                    class="w-full md:w-64 pl-8 pr-4 py-2 input-field">
             <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
           </div>
         </div>
-        
+
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700 table">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead>
               <tr>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
@@ -723,14 +727,14 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
               {% for record in attendance %}
               <tr class="attendance-card">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="text-sm font-medium text-green-500 dark:text-white">{{ record.date.strftime('%d-%b-%Y') }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm  dark:text-gray-400">{{ record.date.strftime('%A') }}</div>
+                  <div class="text-sm text-gray-500 dark:text-gray-400">{{ record.date.strftime('%A') }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span class="badge badge-primary">
@@ -761,31 +765,31 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Menus Section -->
     <div id="menus" class="hidden p-4 md:p-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h2 class="text-2xl md:text-3xl font-bold  dark:text-white">Menu Management</h2>
-          <p class=" dark:text-gray-400">Create and manage meal menus for the week</p>
+          <h2 class="text-2xl md:text-3xl font-bold dark:text-white">Menu Management</h2>
+          <p class="text-gray-500 dark:text-gray-400">Create and manage meal menus for the week</p>
         </div>
-        <div class="flex items-center space-x-2 bg-white dark:bg-slate-800 px-4 py-2 rounded-full shadow-sm">
-         <span class="text-sm text-blue-500 dark:text-gray-300">{{ datetime.now().strftime('%A, %d %B %Y') }}</span>
+        <div class="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-full shadow-sm">
+          <span class="text-sm text-blue-500 dark:text-gray-300">{{ datetime.now().strftime('%A, %d %B %Y') }}</span>
         </div>
       </div>
-      
+
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div class="lg:col-span-2 card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">Add New Menu</h3>
+          <h3 class="text-xl font-bold dark:text-white mb-4">Add New Menu</h3>
           <form method="POST" action="{{ url_for('admin_dashboard') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="form_type" value="menu">
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Day</label>
-                <select class="w-full px-3 py-2 input-field" 
-                        name="day" required>
+                <select class="w-full px-3 py-2 input-field"
+                       name="day" required>
                   <option value="">Select Day</option>
                   <option>Monday</option>
                   <option>Tuesday</option>
@@ -798,8 +802,8 @@
               </div>
               <div>
                 <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Meal Type</label>
-                <select class="w-full px-3 py-2 input-field" 
-                        name="meal_type" required>
+                <select class="w-full px-3 py-2 input-field"
+                       name="meal_type" required>
                   <option value="">Select Meal Type</option>
                   <option>Breakfast</option>
                   <option>Lunch</option>
@@ -808,48 +812,48 @@
                 </select>
               </div>
             </div>
-            
+
             <div class="mb-4">
               <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Items (comma separated)</label>
-              <input type="text" class="w-full px-3 py-2 input-field" 
+              <input type="text" class="w-full px-3 py-2 input-field"
                      name="items" placeholder="e.g. Idly, Vada, Sambar" required>
             </div>
-            
+
             <div class="mb-4">
               <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Nutritional Info</label>
               <div class="grid grid-cols-3 gap-2">
-                <input type="number" class="px-3 py-2 input-field" 
+                <input type="number" class="px-3 py-2 input-field"
                        placeholder="Calories" name="calories">
-                <input type="number" class="px-3 py-2 input-field" 
+                <input type="number" class="px-3 py-2 input-field"
                        placeholder="Protein (g)" name="protein">
-                <input type="number" class="px-3 py-2 input-field" 
+                <input type="number" class="px-3 py-2 input-field"
                        placeholder="Carbs (g)" name="carbs">
               </div>
             </div>
-            
+
             <button type="submit" class="w-full btn-primary py-2 px-4 rounded-lg">
               <i class="fas fa-save mr-2"></i> Save Menu
             </button>
           </form>
         </div>
-        
+
         <div class="card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">Menu Tips</h3>
+          <h3 class="text-xl font-bold dark:text-white mb-4">Menu Tips</h3>
           <div class="space-y-4">
-            <div class="p-3 bg-white dark:bg-slate-800 rounded-lg border-l-4 border-yellow-500">
+            <div class="p-3 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-yellow-500">
               <p class="text-sm font-medium text-green-500 dark:text-gray-300">Balanced Nutrition</p>
               <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Ensure each meal has a good balance of proteins, carbs, and vegetables.</p>
             </div>
-            <div class="p-3 bg-white dark:bg-slate-800 rounded-lg border-l-4 border-green-500">
+            <div class="p-3 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-green-500">
               <p class="text-sm font-medium text-green-500 dark:text-gray-300">Seasonal Ingredients</p>
               <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Using seasonal produce can reduce costs and improve taste.</p>
             </div>
-            <div class="p-3 bg-white dark:bg-slate-800 rounded-lg border-l-4 border-blue-500">
+            <div class="p-3 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-blue-500">
               <p class="text-sm font-medium text-green-500 dark:text-gray-300">Waste Reduction</p>
               <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Plan menus based on attendance predictions to minimize waste.</p>
             </div>
           </div>
-          
+
           <div class="mt-6">
             <h4 class="text-sm font-medium text-green-500 dark:text-gray-300 mb-2">Popular Items</h4>
             <div class="flex flex-wrap gap-2">
@@ -862,10 +866,10 @@
           </div>
         </div>
       </div>
-      
+
       <div class="card overflow-hidden">
-        <div class="p-4 border-b border-gray-200 dark:border-slate-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <h3 class="text-xl font-bold  dark:text-white">All Menus</h3>
+        <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <h3 class="text-xl font-bold dark:text-white">All Menus</h3>
           <div class="flex space-x-2">
             <button class="px-3 py-1 text-sm btn-secondary rounded-lg">
               <i class="fas fa-download mr-1"></i> Export
@@ -875,9 +879,9 @@
             </button>
           </div>
         </div>
-        
+
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700 table">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead>
               <tr>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
@@ -897,11 +901,11 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
               {% for menu in menus %}
               <tr>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium  dark:text-white">{{ menu.day }}</div>
+                  <div class="text-sm font-medium dark:text-white">{{ menu.day }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   {% if menu.meal_type == 'Breakfast' %}
@@ -933,25 +937,23 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
-                    <div class="w-16 bg-gray-200 dark:bg-slate-600 rounded-full h-1.5 mr-2">
+                    <div class="w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mr-2">
                       <div class="bg-green-500 h-1.5 rounded-full" style="width: 70%"></div>
                     </div>
-                    <span class="text-xs  dark:text-gray-400">70% healthy</span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">70% healthy</span>
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex space-x-2">
                     <button onclick="openEditModal('{{ menu.id }}', '{{ menu.day }}', '{{ menu.meal_type }}', `{{ menu['items'] | escape | replace('\n', ' ') }}`)">
-                    <i class="fas fa-edit"></i>
+                      <i class="fas fa-edit text-indigo-500 hover:text-indigo-700"></i>
                     </button>
                     
-                    
                     <a href="{{ url_for('delete_menu', menu_id=menu.id) }}" 
-   class="p-2 text-red-600 hover:text-red-800 dark:hover:text-red-400"
-   onclick="return confirm('Are you sure you want to delete this menu item?');">
-  <i class="fas fa-trash-alt"></i>
-</a>
-
+                       class="text-red-500 hover:text-red-700"
+                       onclick="return confirm('Are you sure you want to delete this menu item?');">
+                      <i class="fas fa-trash-alt"></i>
+                    </a>
                   </div>
                 </td>
               </tr>
@@ -967,533 +969,413 @@
         </div>
       </div>
     </div>
-    
-<!-- Redesigned Add Food Waste Entry Section -->
-<!-- Waste Entry Form and Tips Section -->
-<div id="addwaste" class=" hidden p-4 md:p-8 ">
-  <!-- Entry Form -->
-  <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden mb-8 gap-4">
-    <div class="p-6 bg-gradient-to-r from-blue-500 to-green-500">
-      <h2 class="text-xl font-bold text-white">Add Food Waste Entry</h2>
-      <p class="text-white/80">Log today’s actual usage & waste</p>
-    </div>
-    <div class="p-6">
-      <form method="post" action="{{ url_for('admin_dashboard') }}" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <input type="hidden" name="form_type" value="waste" />
 
+    <!-- Add Waste Section -->
+    <div id="addwaste" class="hidden p-4 md:p-8">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <label class="block text-sm font-medium dark:text-gray-300 mb-1">Date</label>
-          <input type="date" name="date" required id="currentDate"
-                 class="w-full border rounded-lg p-2 dark:bg-slate-800 dark:text-gray-100" />
+          <h2 class="text-2xl md:text-3xl font-bold dark:text-white">Food Waste Tracking</h2>
+          <p class="text-gray-500 dark:text-gray-400">Record and analyze food waste data</p>
+        </div>
+        <div class="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-full shadow-sm">
+          <span class="text-sm text-blue-500 dark:text-gray-300">{{ datetime.now().strftime('%A, %d %B %Y') }}</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div class="lg:col-span-2 card p-6">
+          <h3 class="text-xl font-bold dark:text-white mb-4">Add Waste Entry</h3>
+          <form method="POST" action="{{ url_for('admin_dashboard') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="form_type" value="waste">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Date</label>
+                <input type="date" class="w-full px-3 py-2 input-field"
+                       name="date" value="{{ datetime.now().strftime('%Y-%m-%d') }}" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Meal Type</label>
+                <select class="w-full px-3 py-2 input-field"
+                       name="meal_type_waste" required>
+                  <option value="">Select Meal Type</option>
+                  <option>Breakfast</option>
+                  <option>Lunch</option>
+                  <option>Snacks</option>
+                  <option>Dinner</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Item Name</label>
+              <input type="text" class="w-full px-3 py-2 input-field"
+                     name="item_name" placeholder="e.g. Rice, Vegetables" required>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Actual Quantity Used (kg)</label>
+                <input type="number" step="0.01" class="w-full px-3 py-2 input-field"
+                       name="actual_qty" placeholder="e.g. 5.5" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Waste Quantity (kg)</label>
+                <input type="number" step="0.01" class="w-full px-3 py-2 input-field"
+                       name="waste_qty" placeholder="e.g. 0.5" required>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Notes</label>
+              <textarea class="w-full px-3 py-2 input-field"
+                       name="notes" placeholder="Any reasons for waste?"></textarea>
+            </div>
+
+            <button type="submit" class="w-full btn-primary py-2 px-4 rounded-lg">
+              <i class="fas fa-plus-circle mr-2"></i> Add Waste Entry
+            </button>
+          </form>
         </div>
 
-        <div>
-          <label class="block text-sm font-medium dark:text-gray-300 mb-1">Meal Type</label>
-          <select name="meal_type_waste" id="mealTypeSelect" required
-                  class="w-full border rounded-lg p-2 dark:bg-slate-800 dark:text-gray-100">
-            <option value="">Select Meal Type</option>
-            <option value="Breakfast">Breakfast</option>
-            <option value="Lunch">Lunch</option>
-            <option value="Snack">Snack</option>
-            <option value="Dinner">Dinner</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium dark:text-gray-300 mb-1">Item Name</label>
-          <select name="item_name" id="itemNameSelect" required
-                  class="w-full border rounded-lg p-2 dark:bg-slate-800 dark:text-gray-100">
-            <option value="">Select Item</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium dark:text-gray-300 mb-1">Actual Quantity Used</label>
-          <input type="number" name="actual_qty" step="0.01" required placeholder="e.g. 50"
-                 class="w-full border rounded-lg p-2 dark:bg-slate-800 dark:text-gray-100" />
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium dark:text-gray-300 mb-1">Food Waste (kg)</label>
-          <input type="number" name="waste_qty" step="0.01" required placeholder="e.g. 5"
-                 class="w-full border rounded-lg p-2 dark:bg-slate-800 dark:text-gray-100" />
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium dark:text-gray-300 mb-1">Student Count</label>
-          <input type="number" name="student_count" id="studentCount" readonly
-                 class="w-full border rounded-lg p-2 dark:bg-slate-800 dark:text-gray-100" />
-        </div>
-
-        <div class="col-span-full flex justify-end mt-4">
-          <button type="submit"
-                  class="px-6 py-3 bg-gradient-to-r from-blue-500 to-green-500 text-white font-semibold rounded-2xl shadow-md hover:opacity-90 transition">
-            Add Entry
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Tips -->
-  <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden mb-8 gap-4">
-    <div class="p-6 bg-gradient-to-r from-green-500 to-teal-500">
-      <h2 class="text-xl font-bold text-white">Reduction Tips</h2>
-      <p class="text-white/80">Smart ways to reduce waste</p>
-    </div>
-    <div class="p-6">
-      <div class="space-y-4">
-        <!-- Tip 1 -->
-        <div class="flex items-start gap-3">
-          <div class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-            <i class="fas fa-lightbulb text-green-500"></i>
-          </div>
-          <div>
-            <h4 class="font-medium dark:text-white">Portion Control</h4>
-            <p class="text-sm text-gray-600 dark:text-gray-400">Adjust portion sizes based on historical attendance data.</p>
-          </div>
-        </div>
-        <!-- Tip 2 -->
-        <div class="flex items-start gap-3">
-          <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-            <i class="fas fa-chart-line text-blue-500"></i>
-          </div>
-          <div>
-            <h4 class="font-medium dark:text-white">Track Trends</h4>
-            <p class="text-sm text-gray-600 dark:text-gray-400">Analyze weekly patterns to predict high-waste days.</p>
-          </div>
-        </div>
-        <!-- Tip 3 -->
-        <div class="flex items-start gap-3">
-          <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-            <i class="fas fa-recycle text-purple-500"></i>
-          </div>
-          <div>
-            <h4 class="font-medium dark:text-white">Repurpose Leftovers</h4>
-            <p class="text-sm text-gray-600 dark:text-gray-400">Create new dishes from unused ingredients.</p>
+        <div class="card p-6">
+          <h3 class="text-xl font-bold dark:text-white mb-4">Waste Reduction Tips</h3>
+          <div class="space-y-4">
+            <div class="p-3 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-green-500">
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3">
+                  <i class="fas fa-lightbulb text-green-500"></i>
+                </div>
+                <h4 class="font-medium">Portion Control</h4>
+              </div>
+              <p class="text-xs text-gray-600 dark:text-gray-400">Adjust portion sizes based on historical attendance data.</p>
+            </div>
+            <div class="p-3 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-blue-500">
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
+                  <i class="fas fa-chart-line text-blue-500"></i>
+                </div>
+                <h4 class="font-medium">Track Trends</h4>
+              </div>
+              <p class="text-xs text-gray-600 dark:text-gray-400">Analyze weekly patterns to predict high-waste days.</p>
+            </div>
+            <div class="p-3 bg-white dark:bg-gray-800 rounded-lg border-l-4 border-purple-500">
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-3">
+                  <i class="fas fa-recycle text-purple-500"></i>
+                </div>
+                <h4 class="font-medium">Repurpose Leftovers</h4>
+              </div>
+              <p class="text-xs text-gray-600 dark:text-gray-400">Create new dishes from unused ingredients.</p>
+            </div>
           </div>
         </div>
       </div>
-      <button class="mt-6 w-full py-2 bg-gradient-to-r from-green-400 to-teal-400 text-white rounded-lg hover:opacity-90 transition">
-        View More Tips
-      </button>
+
+      <div class="card overflow-hidden">
+        <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <h3 class="text-xl font-bold dark:text-white">Recent Waste Entries</h3>
+          <div class="flex space-x-2">
+            <button class="px-3 py-1 text-sm btn-secondary rounded-lg">
+              <i class="fas fa-download mr-1"></i> Export
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead>
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  Date
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  Meal Type
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  Item
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  Used (kg)
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  Waste (kg)
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  Waste %
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+              {% for entry in recent_waste_entries %}
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm font-medium dark:text-white">{{ entry.date }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="badge badge-primary">
+                    {{ entry.meal_type }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm dark:text-white">{{ entry.item_name }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm dark:text-white">{{ entry.actual_quantity_used }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="badge badge-danger">
+                    {{ entry.waste_qty }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm dark:text-white">{{ entry.waste_pct }}%</div>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="6" class="px-6 py-4 text-center text-gray-400">
+                  <i class="fas fa-info-circle mr-1"></i> No waste entries found
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          <div class="text-sm text-gray-500 dark:text-gray-400">
+            Showing <span class="font-medium">{{ start_entry }}</span> to <span class="font-medium">{{ end_entry }}</span> of <span class="font-medium">{{ total_entries }}</span> entries
+          </div>
+          <div class="flex space-x-2">
+            {% if current_page > 1 %}
+              <a href="{{ url_for('admin_dashboard', page=current_page - 1) }}#addwaste" class="px-3 py-1 btn-secondary rounded-lg">
+                <i class="fas fa-chevron-left mr-1"></i> Previous
+              </a>
+            {% else %}
+              <span class="px-3 py-1 btn-secondary rounded-lg opacity-50 cursor-not-allowed">
+                <i class="fas fa-chevron-left mr-1"></i> Previous
+              </span>
+            {% endif %}
+            
+            {% if current_page < total_pages %}
+              <a href="{{ url_for('admin_dashboard', page=current_page + 1) }}#addwaste" class="px-3 py-1 btn-secondary rounded-lg">
+                Next <i class="fas fa-chevron-right ml-1"></i>
+              </a>
+            {% else %}
+              <span class="px-3 py-1 btn-secondary rounded-lg opacity-50 cursor-not-allowed">
+                Next <i class="fas fa-chevron-right ml-1"></i>
+              </span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  
-<!-- Waste Table -->
-<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden">
-  <div class="p-6 border-b border-gray-200 dark:border-slate-700 flex justify-between items-center">
-    <h2 class="text-xl font-bold dark:text-white">Recent Waste Entries</h2>
-    <button class="text-sm text-primary flex items-center">
-      <i class="fas fa-download mr-1"></i> Export Data
-    </button>
-  </div>
-  <div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
-      <thead class="bg-gray-50 dark:bg-slate-700">
-        <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Meal</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Item</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Used (kg)</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Waste (kg)</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">% Waste</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
-        </tr>
-      </thead>
-      <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
-        {% for entry in recent_waste_entries %}
-        <tr>
-          <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-gray-300">{{ entry.date }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-gray-300">{{ entry.meal_type }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium dark:text-white">{{ entry.item_name }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-gray-300">{{ entry.actual_quantity_used }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-red-500">{{ entry.waste_qty }}</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-gray-300">{{ entry.waste_pct }}%</td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm dark:text-gray-300">
-            <button class="text-blue-500 hover:text-blue-700 mr-3"><i class="fas fa-edit"></i></button>
-            <button class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-
-  <!-- ✅ Corrected Pagination -->
-  <div class="px-6 py-4 bg-gray-50 dark:bg-slate-700 border-t border-gray-200 dark:border-slate-700 flex items-center justify-between">
-    <div class="text-sm text-gray-500 dark:text-gray-400">
-      Showing <span class="font-medium">{{ start_entry }}</span> to <span class="font-medium">{{ end_entry }}</span> of <span class="font-medium">{{ total_entries }}</span> entries
-    </div>
-    <div class="flex space-x-2">
-      {% if current_page > 1 %}
-        <a href="{{ url_for('admin_dashboard', page=current_page - 1) }}#addwaste" class="px-3 py-1 border rounded-md text-sm dark:text-gray-300">Previous</a>
-      {% else %}
-        <span class="px-3 py-1 border rounded-md text-sm dark:text-gray-300 opacity-50 cursor-not-allowed">Previous</span>
-      {% endif %}
-
-      {% for p in range(1, total_pages + 1) %}
-        <a href="{{ url_for('admin_dashboard', page=p) }}#addwaste"
-           class="px-3 py-1 rounded-md text-sm {% if p == current_page %}bg-primary text-white{% else %}border dark:text-gray-300{% endif %}">
-          {{ p }}
-        </a>
-      {% endfor %}
-
-      {% if current_page < total_pages %}
-        <a href="{{ url_for('admin_dashboard', page=current_page + 1) }}#addwaste" class="px-3 py-1 border rounded-md text-sm dark:text-gray-300">Next</a>
-      {% else %}
-        <span class="px-3 py-1 border rounded-md text-sm dark:text-gray-300 opacity-50 cursor-not-allowed">Next</span>
-      {% endif %}
-    </div>
-  </div>
-</div>
-
-</div>
-
-<!-- Script -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('currentDate').value = new Date().toISOString().split('T')[0];
-    document.getElementById('studentCount').value = {{ total_students_today }};
-
-    const menusByMeal = {{ menus_by_meal | tojson }};
-    const mealSelect = document.getElementById('mealTypeSelect');
-    const itemSelect = document.getElementById('itemNameSelect');
-
-    mealSelect.addEventListener('change', function () {
-      const items = menusByMeal[this.value.toLowerCase()] || [];
-      itemSelect.innerHTML = '<option value="">Select Item</option>';
-      items.forEach(item => {
-        const opt = document.createElement('option');
-        opt.value = item;
-        opt.textContent = item;
-        itemSelect.appendChild(opt);
-      });
-    });
-  });
-</script>
-
-
-
 
     <!-- Analytics Section -->
     <div id="analytics" class="hidden p-4 md:p-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h2 class="text-2xl md:text-3xl font-bold  dark:text-white">Food Waste Analytics</h2>
-          <p class=" dark:text-gray-400">Visual insights into your food waste patterns</p>
+          <h2 class="text-2xl md:text-3xl font-bold dark:text-white">Food Waste Analytics</h2>
+          <p class="text-gray-500 dark:text-gray-400">Visual insights into your food waste patterns</p>
         </div>
-        <div class="flex items-center space-x-2 bg-white dark:bg-slate-800 px-4 py-2 rounded-full shadow-sm">
-          <span class="text-sm  dark:text-gray-300">Last 30 Days</span>
+        <div class="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-full shadow-sm">
+          <span class="text-sm text-blue-500 dark:text-gray-300">Last 30 Days</span>
         </div>
       </div>
-      
+
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <div class="card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">Waste Trend</h3>
+          <h3 class="text-xl font-bold dark:text-white mb-4">Waste Trend</h3>
           <canvas id="wasteTrendChart" height="300"></canvas>
         </div>
-        
+
         <div class="card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">Savings Potential</h3>
+          <h3 class="text-xl font-bold dark:text-white mb-4">Savings Potential</h3>
           <canvas id="savingsChart" height="300"></canvas>
         </div>
       </div>
-      
+
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div class="card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">Top Wasted Items</h3>
+          <h3 class="text-xl font-bold dark:text-white mb-4">Top Wasted Items</h3>
           <canvas id="wasteItemsChart" height="300"></canvas>
         </div>
-        
+
         <div class="card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">Attendance vs Waste</h3>
+          <h3 class="text-xl font-bold dark:text-white mb-4">Attendance vs Waste</h3>
           <canvas id="attendanceWasteChart" height="300"></canvas>
         </div>
-        
+
         <div class="card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">Meal Type Waste</h3>
+          <h3 class="text-xl font-bold dark:text-white mb-4">Meal Type Waste</h3>
           <canvas id="mealWasteChart" height="300"></canvas>
         </div>
       </div>
-      
+
       <div class="card p-6">
-        <h3 class="text-xl font-bold  dark:text-white mb-4">Waste Reduction Progress</h3>
+        <h3 class="text-xl font-bold dark:text-white mb-4">Waste Reduction Progress</h3>
         <div class="flex items-center mb-4">
-          <div class="w-full bg-gray-200 dark:bg-slate-600 rounded-full h-4">
+          <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
             <div class="bg-gradient-to-r from-blue-500 to-green-500 h-4 rounded-full" style="width: 65%"></div>
           </div>
           <span class="ml-4 text-sm font-medium text-green-500 dark:text-gray-300">65% of goal achieved</span>
         </div>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="p-3 bg-white dark:bg-slate-800 rounded-lg">
+          <div class="p-3 bg-white dark:bg-gray-800 rounded-lg">
             <p class="text-sm font-medium text-green-500 dark:text-gray-300">Total Waste Reduced</p>
-            <h4 class="text-2xl font-bold  dark:text-white">42 kg</h4>
+            <h4 class="text-2xl font-bold dark:text-white">42 kg</h4>
             <div class="flex items-center mt-1">
               <span class="badge badge-success">
                 <i class="fas fa-arrow-up mr-1 text-xs"></i> 15%
               </span>
-              <span class="text-xs  dark:text-gray-400 ml-2">from last month</span>
-              </div>
+              <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">from last month</span>
+            </div>
           </div>
-          <div class="p-3 bg-white dark:bg-slate-800 rounded-lg">
+          <div class="p-3 bg-white dark:bg-gray-800 rounded-lg">
             <p class="text-sm font-medium text-green-500 dark:text-gray-300">Cost Savings</p>
-            <h4 class="text-2xl font-bold  dark:text-white">$156.80</h4>
+            <h4 class="text-2xl font-bold dark:text-white">$156.80</h4>
             <div class="flex items-center mt-1">
               <span class="badge badge-success">
                 <i class="fas fa-arrow-up mr-1 text-xs"></i> 22%
               </span>
-              <span class="text-xs  dark:text-gray-400 ml-2">from last month</span>
+              <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">from last month</span>
             </div>
           </div>
-          <div class="p-3 bg-white dark:bg-slate-800 rounded-lg">
+          <div class="p-3 bg-white dark:bg-gray-800 rounded-lg">
             <p class="text-sm font-medium text-green-500 dark:text-gray-300">Efficiency Score</p>
-            <h4 class="text-2xl font-bold  dark:text-white">84/100</h4>
+            <h4 class="text-2xl font-bold dark:text-white">84/100</h4>
             <div class="flex items-center mt-1">
               <span class="badge badge-success">
                 <i class="fas fa-arrow-up mr-1 text-xs"></i> 8 points
               </span>
-              <span class="text-xs  dark:text-gray-400 ml-2">from last month</span>
+              <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">from last month</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
+
     <!-- Settings Section -->
     <div id="settings" class="hidden p-4 md:p-8">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h2 class="text-2xl md:text-3xl font-bold  dark:text-white">Admin Settings</h2>
-          <p class=" dark:text-gray-400">Configure your account and system preferences</p>
+          <h2 class="text-2xl md:text-3xl font-bold dark:text-white">Admin Settings</h2>
+          <p class="text-gray-500 dark:text-gray-400">Configure your account preferences</p>
         </div>
-        <div class="flex items-center space-x-2 bg-white dark:bg-slate-800 px-4 py-2 rounded-full shadow-sm">
-          <span class="text-sm  dark:text-gray-300">System Configuration</span>
+        <div class="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-full shadow-sm">
+          <span class="text-sm text-blue-500 dark:text-gray-300">System Preferences</span>
         </div>
       </div>
-      
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Email Notifications -->
         <div class="card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">Profile Settings</h3>
-          
+          <h3 class="text-xl font-bold dark:text-white mb-4">Notification Preferences</h3>
           <form method="POST" action="{{ url_for('update_admin_settings') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Full Name</label>
-              <input type="text" class="w-full px-3 py-2 input-field" 
-                     name="full_name" value="{{ admin.full_name }}" required>
+            <div class="flex items-center mb-4">
+              <input type="checkbox" id="emailAlerts" name="emailAlerts"
+                     class="h-5 w-5 rounded text-green-600"
+                     {% if admin.email_alerts %}checked{% endif %}>
+              <label for="emailAlerts" class="ml-3 text-sm dark:text-gray-300">
+                Send system alerts to {{ admin.email }}
+              </label>
             </div>
-            
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Email</label>
-              <input type="email" class="w-full px-3 py-2 input-field" 
-                     value="{{ admin.email }}" disabled>
-            </div>
-            
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">New Password <span class="text-gray-400">(leave blank if not changing)</span></label>
-              <input type="password" class="w-full px-3 py-2 input-field" 
-                     name="new_password" placeholder="New Password">
-            </div>
-            
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-1">Confirm New Password</label>
-              <input type="password" class="w-full px-3 py-2 input-field" 
-                     name="confirm_password" placeholder="Confirm New Password">
-            </div>
-            
-            <button type="submit" class="w-full btn-primary py-2 px-4 rounded-lg">
-              <i class="fas fa-save mr-2"></i> Save Changes
+            <button type="submit" name="form_type" value="notifications"
+                    class="btn-primary px-4 py-2 rounded-lg">
+              Save Notifications
             </button>
           </form>
         </div>
-        
+
+        <!-- Theme Toggle -->
         <div class="card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">System Preferences</h3>
-          
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-2">Theme</label>
-              <div class="flex space-x-4">
-                <button id="lightTheme" class="px-4 py-2 btn-secondary rounded-lg flex items-center">
-                  <i class="fas fa-sun text-yellow-500 mr-2"></i>
-                  <span>Light</span>
-                </button>
-                <button id="darkTheme" class="px-4 py-2 bg-gray-800 text-white rounded-lg flex items-center">
-                  <i class="fas fa-moon text-blue-300 mr-2"></i>
-                  <span>Dark</span>
-                </button>
-              </div>
-            </div>
-            
-            <div>
-              <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-2">Notification Preferences</label>
-              <div class="space-y-2">
-                <label class="flex items-center">
-                  <input type="checkbox" class="rounded text-primary" checked>
-                  <span class="ml-2 text-sm text-green-500 dark:text-gray-300">Email Alerts</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="rounded text-primary" checked>
-                  <span class="ml-2 text-sm text-green-500 dark:text-gray-300">Push Notifications</span>
-                </label>
-                <label class="flex items-center">
-                  <input type="checkbox" class="rounded text-primary">
-                  <span class="ml-2 text-sm text-green-500 dark:text-gray-300">SMS Alerts</span>
-                </label>
-              </div>
-            </div>
-            
-            <div>
-              <label class="block text-sm font-medium text-green-500 dark:text-gray-300 mb-2">Data Backup</label>
-              <div class="flex space-x-2">
-                <button class="px-4 py-2 btn-secondary rounded-lg flex items-center">
-                  <i class="fas fa-download mr-2"></i>
-                  <span>Export Data</span>
-                </button>
-                <button class="px-4 py-2 btn-secondary rounded-lg flex items-center">
-                  <i class="fas fa-upload mr-2"></i>
-                  <span>Import Data</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="card p-6">
-          <h3 class="text-xl font-bold  dark:text-white mb-4">System Information</h3>
-          
-          <div class="space-y-4">
-            <div>
-              <p class="text-sm font-medium text-green-500 dark:text-gray-300">App Version</p>
-              <p class="text-lg font-bold  dark:text-white">2.4.1</p>
-            </div>
-            
-            <div>
-              <p class="text-sm font-medium text-green-500 dark:text-gray-300">Last Updated</p>
-              <p class="text-lg font-bold  dark:text-white">June 15, 2023</p>
-            </div>
-            
-            <div>
-              <p class="text-sm font-medium text-green-500 dark:text-gray-300">Database Size</p>
-              <p class="text-lg font-bold  dark:text-white">24.7 MB</p>
-            </div>
-            
-            <div>
-              <p class="text-sm font-medium text-green-500 dark:text-gray-300">Active Users</p>
-              <p class="text-lg font-bold  dark:text-white">3 Administrators</p>
-            </div>
-            
-            <div class="pt-4 border-t border-gray-200 dark:border-slate-700">
-              <button class="px-4 py-2 bg-red-100 text-red-600 rounded-lg flex items-center w-full justify-center">
-                <i class="fas fa-exclamation-triangle mr-2"></i>
-                <span>Emergency Reset</span>
-              </button>
-            </div>
+          <h3 class="text-xl font-bold dark:text-white mb-4">Appearance</h3>
+          <div class="flex space-x-4">
+            <button id="lightTheme" class="flex-1 px-4 py-2 btn-secondary rounded-lg">
+              Light Mode
+            </button>
+            <button id="darkTheme" class="flex-1 px-4 py-2 bg-gray-800 text-white rounded-lg">
+              Dark Mode
+            </button>
           </div>
         </div>
       </div>
-      
-      <div class="card p-6">
-        <h3 class="text-xl font-bold  dark:text-white mb-4">Activity Log</h3>
-        
+
+      <!-- Activity Log -->
+      <div class="card p-6 mb-4">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold dark:text-white">Activity Log</h3>
+          <a href="{{ url_for('export_activity_log', page=current_page) }}"
+             class="px-3 py-1 btn-secondary rounded-lg">
+            <i class="fas fa-file-csv mr-1"></i> Export CSV
+          </a>
+        </div>
         <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-700 table">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead>
               <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Timestamp
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Action
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  Details
-                </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  IP Address
-                </th>
+                <th class="px-4 py-2 text-left text-xs font-medium uppercase dark:text-gray-400">Time</th>
+                <th class="px-4 py-2 text-left text-xs font-medium uppercase dark:text-gray-400">Action</th>
+                <th class="px-4 py-2 text-left text-xs font-medium uppercase dark:text-gray-400">Details</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200 dark:divide-slate-700">
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+              {% for entry in activity_logs %}
               <tr>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm  dark:text-white">2023-06-20 14:32:45</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="badge badge-primary">
-                    Login
+                <td class="px-4 py-2 text-sm dark:text-white">{{ entry.timestamp }}</td>
+                <td class="px-4 py-2">
+                  <span class="badge badge-{{ entry.type|lower }}">
+                    {{ entry.type }}
                   </span>
                 </td>
-                <td class="px-6 py-4">
-                  <div class="text-sm  dark:text-gray-400">Successful login</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm  dark:text-gray-400">192.168.1.45</div>
-                </td>
+                <td class="px-4 py-2 text-sm dark:text-gray-300">{{ entry.details }}</td>
               </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm  dark:text-white">2023-06-20 10:15:22</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="badge badge-success">
-                    Update
-                  </span>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="text-sm  dark:text-gray-400">Updated menu for Monday Lunch</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm  dark:text-gray-400">192.168.1.45</div>
-                </td>
-              </tr>
-              <tr>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm  dark:text-white">2023-06-19 16:45:18</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="badge badge-info">
-                    Export
-                  </span>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="text-sm  dark:text-gray-400">Exported attendance data</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm  dark:text-gray-400">192.168.1.45</div>
-                </td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="mt-4 flex justify-center space-x-2">
+          {% if current_page > 1 %}
+          <a href="{{ url_for('admin_dashboard', page=current_page-1) }}"
+             class="px-3 py-1 btn-secondary rounded-lg">&laquo; Prev</a>
+          {% endif %}
+          <span class="px-3 py-1 text-sm dark:text-gray-300">Page {{ current_page }} of {{ total_pages }}</span>
+          {% if current_page < total_pages %}
+          <a href="{{ url_for('admin_dashboard', page=current_page+1) }}"
+             class="px-3 py-1 btn-secondary rounded-lg">Next &raquo;</a>
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
-  
+
   <!-- Ingredient Modal -->
   <div id="ingredientModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
       <div class="fixed inset-0 transition-opacity" aria-hidden="true">
         <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
       </div>
-      
+
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-      
-      <div class="inline-block align-bottom bg-white dark:bg-slate-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-        <div class="bg-primary px-4 py-3 sm:px-6">
+
+      <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div class="bg-indigo-600 px-4 py-3 sm:px-6">
           <h3 class="text-lg leading-6 font-medium text-white" id="ingredientModalLabel">
             Ingredients Details
           </h3>
         </div>
         <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <ul class="divide-y divide-gray-200 dark:divide-slate-700" id="ingredientList"></ul>
+          <ul class="divide-y divide-gray-200 dark:divide-gray-700" id="ingredientList"></ul>
         </div>
-        <div class="bg-gray-50 dark:bg-slate-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-          <button type="button" onclick="closeModal('ingredientModal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-green-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+        <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+          <button type="button" onclick="closeModal('ingredientModal')" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
             Close
           </button>
         </div>
@@ -1621,7 +1503,19 @@
       </div>
     </div>
   </div>
-  
+  <!-- Theme toggle script (can be placed just before </body>) -->
+<script>
+  const root = document.documentElement;
+  document.getElementById('lightTheme').onclick = () => {
+    root.classList.remove('dark'); localStorage.theme = 'light';
+  };
+  document.getElementById('darkTheme').onclick = () => {
+    root.classList.add('dark'); localStorage.theme = 'dark';
+  };
+  // Persist mode on load
+  if (localStorage.theme === 'dark') root.classList.add('dark');
+  else root.classList.remove('dark');
+</script>
   <script>
     // Mobile menu toggle
     const mobileMenuButton = document.getElementById('mobileMenuButton');
@@ -1738,7 +1632,7 @@
     }
     
     // Ingredient modal
-    const ingredientsData = {{ item_ingredients|tojson }};
+   const ingredientsData = {{ item_ingredients|default({})|tojson }};
     
     function openIngredientModal(itemName) {
       const list = document.getElementById('ingredientList');
@@ -1801,4 +1695,82 @@
   {% endif %}
 {% endwith %}
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const wasteTrendChart = new Chart(document.getElementById("wasteTrendChart"), {
+  type: 'line',
+  data: {
+    labels: {{ waste_trend_labels | tojson }},
+    datasets: [{
+      label: 'Food Waste (kg)',
+      data: {{ waste_trend_data | tojson }},
+      borderColor: '#ef4444',
+      backgroundColor: 'rgba(239, 68, 68, 0.2)',
+      fill: true,
+      tension: 0.4
+    }]
+  }
+});
+
+const savingsChart = new Chart(document.getElementById("savingsChart"), {
+  type: 'bar',
+  data: {
+    labels: {{ savings_labels | tojson }},
+    datasets: [{
+      label: 'Estimated Savings (₹)',
+      data: {{ savings_data | tojson }},
+      backgroundColor: '#10b981'
+    }]
+  }
+});
+
+const wasteItemsChart = new Chart(document.getElementById("wasteItemsChart"), {
+  type: 'bar',
+  data: {
+    labels: {{ waste_items_labels | tojson }},
+    datasets: [{
+      label: 'Total Waste (kg)',
+      data: {{ waste_items_data | tojson }},
+      backgroundColor: '#3b82f6'
+    }]
+  }
+});
+
+const attendanceWasteChart = new Chart(document.getElementById("attendanceWasteChart"), {
+  type: 'line',
+  data: {
+    labels: {{ attendance_labels | tojson }},
+    datasets: [
+      {
+        label: 'Student Count',
+        data: {{ attendance_data | tojson }},
+        borderColor: '#6366f1',
+        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+        tension: 0.4,
+        fill: true
+      },
+      {
+        label: 'Food Waste (kg)',
+        data: {{ waste_data | tojson }},
+        borderColor: '#f59e0b',
+        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+        tension: 0.4,
+        fill: true
+      }
+    ]
+  }
+});
+
+const mealWasteChart = new Chart(document.getElementById("mealWasteChart"), {
+  type: 'doughnut',
+  data: {
+    labels: {{ meal_waste_labels | tojson }},
+    datasets: [{
+      label: 'Waste by Meal Type',
+      data: {{ meal_waste_data | tojson }},
+      backgroundColor: ['#f87171', '#60a5fa', '#34d399', '#fbbf24']
+    }]
+  }
+});
+</script>
 </html>
